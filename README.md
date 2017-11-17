@@ -6,6 +6,7 @@ output:
 ---
 
 # Framingham package
+r-framingham is a package used to estimate the 10-year cardiovascular risk of an individual using Framingham_Risk_Score standard guidelines https://en.wikipedia.org/wiki/Framingham_Risk_Score
 
 The Framingham Risk Score is a gender-specific algorithm used to estimate the 10-year cardiovascular risk of an individual.
 ## package introduction 
