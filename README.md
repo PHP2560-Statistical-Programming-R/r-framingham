@@ -7,8 +7,7 @@ output:
 
 # Framingham package
 
-One Paragraph of project description goes here
-
+The Framingham Risk Score is a gender-specific algorithm used to estimate the 10-year cardiovascular risk of an individual.
 ## package introduction 
 the  Framingham score for Coronary Heart Disease (10-year risk)
 
@@ -18,9 +17,11 @@ the  Framingham score for Coronary Heart Disease (10-year risk)
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Task
 
-What things you need to install the software and how to install them
+Nour - literature of Framingham and step 1 to 5
+Allan - setup r-package project requirements and step 5 to 10
+
 
 ```
 Give examples
