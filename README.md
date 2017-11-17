@@ -19,8 +19,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Task
 
-Nour - literature of Framingham and step 1 to 5
-Allan - setup r-package project requirements and step 5 to 10
+* Nour - literature of Framingham and step 1 to 5
+* Allan - setup r-package project requirements and step 5 to 10
 
 
 ```
