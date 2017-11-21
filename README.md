@@ -1,14 +1,30 @@
 ---
 output:
-  html_document: default
-  pdf_document: default
   word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 # Framingham package
 r-framingham is a package used to estimate the 10-year cardiovascular risk of an individual using Framingham_Risk_Score standard guidelines https://en.wikipedia.org/wiki/Framingham_Risk_Score
 
 The Framingham Risk Score is a gender-specific algorithm used to estimate the 10-year cardiovascular risk of an individual.
+
+## Background
+
+The Framingham 10 years risk score is based on the famous Framingham Heart Study which began in 1948 on a cohort of 5,209 men and women between the ages of 30 and 62 recruited from the town of Framingham, Massachusetts. Currently, the study is still ongoing with participation of the third generation, the grandchildren of the Original Cohort.
+
+The goal of Framingham Study was to identify the common risk factors for developing Cardiovascular disease (CVD) by following its development in asymptomatic population with no history of heart attack or stroke.
+
+The study concluded that major CVD risk factors are: high blood pressure, high blood cholesterol, smoking, obesity, diabetes, and physical inactivity. In addition to related factors such as blood triglyceride and HDL cholesterol levels, age, gender, and psychosocial issues.
+
+Using Statistical tests which included age-adjusted linear regression or logistic regression to test for trends across blood pressure, TC, LDL-C, and HDL-C categories. Age-adjusted Cox proportional hazards regression and its accompanying c statistic were used to test for the relation between various independent variables and the CHD outcome and to evaluate the discriminatory ability of various prediction models. The 12-year follow-up was used in the proportional hazards models, and results were adapted to provide 10-year CHD incidence estimates. Separate score sheets were developed for each sex using TC and LDL-C categories. These sheets adapted the results of proportional hazards regressions by use of a system that assigned points for each risk factor based on the value for the corresponding β-coefficient of the regression analyses.
+Then a score sheets for prediction of CHD using TC and LDL-C categorical variables were developed from the β-coefficients of Cox proportional hazards models. 
+
+Adapted from: 
+1.	Wilson PWF, D’Agostino RB, Levy D, Belanger AM, Silbershatz H, Kannel WB. Prediction of Coronary Heart Disease Using Risk Factor Categories. Circulation 1998;97(18):1837. 
+2.	https://www.framinghamheartstudy.org/ 
+
 
 ## Framingham Algorithim
 
