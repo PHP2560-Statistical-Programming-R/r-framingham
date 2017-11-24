@@ -54,10 +54,13 @@ summarise( risk_score=framingham_func(gender=gender,age:age,...))
  
 ### Installation
 
-when this package is published, a user can install it by running: 
+r-framingham is currently only available from github. To install it, run the following script.
+
 
 ```
-install.packages("r-framingham")
+# install.packages("devtools")
+devtools::install_github("PHP2560-Statistical-Programming-R/r-framingham"): 
+
 ```
 
 ### Task Breakdown
