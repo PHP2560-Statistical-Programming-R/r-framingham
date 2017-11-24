@@ -1,8 +1,12 @@
 Package: frisk
 Type: Package
-Title: What the Package Does (Title Case)
+Title: a grammer for framingham study based risk scores calculation 
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: c(
+    person("Allan", "Kimaina", , "allan_kimaina@brown.edu") 
+    person("MHD Nour", "Audi", , "MHD_Nour_audi@brown.edu",)
+Author: Allan Kimaina,
+        MHD Nour Audi 
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
