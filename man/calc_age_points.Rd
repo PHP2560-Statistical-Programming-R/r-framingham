@@ -17,6 +17,11 @@ framingham age risk scores \code{age} and \code{gender}
 \description{
 \code{calc_age_points} returns age risk factor points given age and gender
 }
+\details{
+\code{calc_age_points} returns TODO: add some details
+}
 \examples{
-calc_age_points(df, gender=M, age=10)
+calc_age_points(gender='M', age=50)
+calc_age_points(gender='F', age=28)
+calc_age_points(gender='f', age=35)
 }
