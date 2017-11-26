@@ -4,19 +4,18 @@
 \alias{calc_hdl_points}
 \title{calculate hdl risk factor}
 \usage{
-calc_hdl_points(hdl, gender)
+calc_hdl_points(hdl)
 }
 \arguments{
 \item{hdl}{A number}
-
-\item{gender}{A character}
 }
 \value{
-framingham hdl risk score \code{hdl} and \code{gender}
+framingham CAD10 hdl risk score \code{hdl}
 }
 \description{
-\code{calc_hdl_points} returns hdl risk factor points given hdl and gender
+\code{calc_hdl_points} returns hdl risk factor points given hdl
 }
 \examples{
-calc_hdl_points(hdl, gender)
+calc_hdl_points(60)
+calc_hdl_points(30)
 }
