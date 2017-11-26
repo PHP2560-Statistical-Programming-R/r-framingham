@@ -4,12 +4,12 @@
 \alias{calc_age_points}
 \title{calculate age risk factor}
 \usage{
-calc_age_points(age, gender)
+calc_age_points(gender, age)
 }
 \arguments{
-\item{age}{A number}
-
 \item{gender}{A character}
+
+\item{age}{A number}
 }
 \value{
 framingham age risk scores \code{age} and \code{gender}
@@ -22,6 +22,6 @@ framingham age risk scores \code{age} and \code{gender}
 }
 \examples{
 calc_age_points(gender='M', age=50)
-calc_age_points(gender='F', age=28)
+calc_age_points(gender='F', age=48)
 calc_age_points(gender='f', age=35)
 }
