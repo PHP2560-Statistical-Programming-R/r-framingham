@@ -11,9 +11,9 @@
 #' @return framingham age risk scores \code{age} and \code{gender}
 #' @examples
 #' calc_age_points(gender='M', age=50)
-#' calc_age_points(gender='F', age=28)
+#' calc_age_points(gender='F', age=48)
 #' calc_age_points(gender='f', age=35)
-calc_age_points <- function (age, gender){
+calc_age_points <- function (gender,age){
   points <- 0
   # logic
   if(gender=="M" || gender=="m"){
@@ -27,11 +27,11 @@ calc_age_points <- function (age, gender){
 
 }
 
-# this male specific function takes in age and returns framingham point
+# this male specific function takes in age and returns framingham CAD10 point
 calc_age_male <- function (age){  # age should be numeric
 
-  # age less 30 returns NA ~ cardivascular not applicable to < 30
-  if (age<30){
+  # age less 30 or more than 74 returns NA ~ cardivascular risk score not applicable to < 30 | > 74
+  if (age<30 || age >74){
     points <- NA
   } else if(age>=30 && age<=34){
     points <- 0
@@ -51,8 +51,6 @@ calc_age_male <- function (age){  # age should be numeric
     points <- 12
   }else if(age>=70 && age<=74){
     points <- 14
-  }else if(age>=75){
-    points <- 15
   }
 
   return(points);
@@ -61,8 +59,8 @@ calc_age_male <- function (age){  # age should be numeric
 # this female specific function takes in age and returns framingham points
 calc_age_female <- function (age){ # age should be numeric
   point <- 0
-  # age less 30 returns NA ~ cardivascular not applicable to < 30
-  if (age<30){
+  # age less 30 or more than 74 returns NA ~ cardivascular risk score not applicable to < 30 | > 74
+  if (age<30 || age >74){
     points <- NA
   } else if(age>=30 && age<=34){
     points <- 0
@@ -82,8 +80,6 @@ calc_age_female <- function (age){ # age should be numeric
     points <- 10
   }else if(age>=70 && age<=74){
     points <- 11
-  }else if(age>=75){
-    points <- 12
   }
 
   return(points);
