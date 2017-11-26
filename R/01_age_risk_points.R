@@ -27,7 +27,7 @@ calc_age_points <- function (gender,age){
 
 }
 
-# this male specific function takes in age and returns framingham CAD10 point
+# this male specific function takes in age and returns framingham CAD10 yeras risk points
 calc_age_male <- function (age){  # age should be numeric
 
   # age less 30 or more than 74 returns NA ~ cardivascular risk score not applicable to < 30 | > 74
