@@ -3,8 +3,8 @@ Type: Package
 Title: a grammer for framingham study based risk scores calculation 
 Version: 0.1.0
 Authors@R: c(
-    person("Allan", "Kimaina", , "allan_kimaina@brown.edu") 
-    person("MHD Nour", "Audi", , "MHD_Nour_audi@brown.edu",)
+    person("Allan", "Kimaina", "allan_kimaina@brown.edu"), 
+    person("MHD Nour", "Audi","MHD_Nour_audi@brown.edu"))
 Author: Allan Kimaina,
         MHD Nour Audi 
 Maintainer: The package maintainer <yourself@somewhere.net>
