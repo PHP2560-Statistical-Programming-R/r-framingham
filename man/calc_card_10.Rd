@@ -17,9 +17,9 @@ calc_card_10(data, ...)
 
 \item{cholesterol}{A number}
 
-\item{sbp_treated}{A number}
+\item{sbp}{A number}
 
-\item{sbp_untreated}{A number}
+\item{is_sbp_under_treatment}{A boolean}
 
 \item{smoking_status}{A boolean}
 }
@@ -33,5 +33,8 @@ framingham cardivascular risk scores \code{data} and \code{...}
 This is the main function: which returns framingham cardivascular risk score
 }
 \examples{
-calc_card_10(df, gender=M, age=10)
+df <- data.frame(age=sample(1:100,10,rep=TRUE),
+                 gender=sample(c('M','F'),10,rep=TRUE)
+                 )
+calc_card_10(df, age="age", gender="gender")
 }
