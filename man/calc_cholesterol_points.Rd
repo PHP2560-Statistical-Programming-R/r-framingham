@@ -4,19 +4,19 @@
 \alias{calc_cholesterol_points}
 \title{calculate cholesterol risk factor}
 \usage{
-calc_cholesterol_points(cholesterol, gender)
+calc_cholesterol_points(gender, chol)
 }
 \arguments{
-\item{cholesterol}{A number}
-
 \item{gender}{A character}
+
+\item{cholesterol}{A number}
 }
 \value{
 framingham cholesterol risk score \code{cholesterol} and \code{gender}
 }
 \description{
-\code{calc_hdl_points} returns cholesterol risk factor points given cholesterol and gender
+\code{calc_cholesterol_points} returns cholesterol risk factor points given cholesterol and gender
 }
 \examples{
-calc_hdl_points(cholesterol, gender)
+calc_cholesterol_points(gender='f', chol=35)
 }
