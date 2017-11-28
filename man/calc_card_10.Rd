@@ -22,19 +22,35 @@ calc_card_10(data, ...)
 \item{is_sbp_under_treatment}{A boolean}
 
 \item{smoking_status}{A boolean}
+
+\item{diabetes_status}{A boolean}
 }
 \value{
 framingham cardivascular risk scores \code{data} and \code{...}
 }
 \description{
-\code{calc_card_10} returns 10 years cardivascular mortality risk score
+\code{calc_card_10} returns 10 years cardivascular relative risk score,
 }
 \details{
-This is the main function: which returns framingham cardivascular risk score
+This package uses the widely used framingham risk scoring algorithm used to determine an individual's chances of developing cardiovascular disease.
+This package gives an estimate of the probability that a person will develop cardiovascular disease within a specified amount of time (10 years)
 }
 \examples{
-df <- data.frame(age=sample(1:100,10,rep=TRUE),
-                 gender=sample(c('M','F'),10,rep=TRUE)
-                 )
-calc_card_10(df, age="age", gender="gender")
+# simulate patients data
+df <- data.frame(age=sample(30:70,100,rep=TRUE),
+              gender=sample(c("M","F"),100,rep=TRUE),
+              hdl=sample(10:100,100,rep=TRUE),
+              chl=sample(100:400,100,rep=TRUE),
+              sbp=sample(90:200,100,rep=TRUE),
+              isSbpTreated=sample(c(TRUE,FALSE),100,rep=TRUE),
+              smoking=sample(c(TRUE,FALSE),100,rep=TRUE),
+              diabetes=sample(c(TRUE,FALSE),100,rep=TRUE)
+)
+
+# call frisk function
+calc_card_10(df, age="age", gender="gender", cholesterol="chl",
+            hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+            smoking_status="smoking", diabetes_status="diabetes"
+)
+
 }

@@ -95,8 +95,8 @@ See also the list of [contributors](https://github.com/PHP2560-Statistical-Progr
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-
-* Hat tip to anyone who's code was used
+* https://www.framinghamheartstudy.org/
+* Hat tip to anyone who's package was used
 * Inspiration
 * etc
 
