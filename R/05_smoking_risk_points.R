@@ -11,7 +11,7 @@
 #' calc_smoking_points(status, gender)
 
 calc_smoking_points <- function (status, gender){
-  if(gender=="M"){
+  if(gender=="M" || gender == "m"){
     # logic for male
     if(status==TRUE){
       return(4)
