@@ -33,9 +33,15 @@ df <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
 )
 
-# call frisk function
+# call frisk function case no bmi
 calc_card_10(df, age="age", gender="gender", cholesterol="chl", 
              hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+             smoking_status="smoking", diabetes_status="diabetes"
+)
+
+# call frisk function using bmi
+calc_card_10(df, age="age", gender="gender", bmi="bmi",
+             sbp="sbp", is_sbp_under_treatment="isSbpTreated",
              smoking_status="smoking", diabetes_status="diabetes"
 )
 

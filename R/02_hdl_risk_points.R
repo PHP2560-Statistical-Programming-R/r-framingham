@@ -15,7 +15,7 @@ calc_hdl_points <- function (hdl){# HDL should be numeric
   points <- 0
 
    # HDL not between 10 and 100 will returne NA ~ values outside this range are not applicable to the score.
-  if (hdl < 10 || hdl > 100){
+  if (hdl < 10 || hdl > 100 || is.na(hdl)){
     points <- NA
   }else if (hdl >= 60 && hdl <= 100){
     points <- -2

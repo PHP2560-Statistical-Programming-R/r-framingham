@@ -26,7 +26,7 @@ calc_cholesterol_points <- function (gender,chol){
 calc_cholesterol_male <- function (chol){  # chol should be numeric
   point <- 0
   # chol less 100 or more than 405 returns NA
-  if (chol<100 || chol >405){
+  if (chol<100 || chol >405|| is.na(chol)){
     points <- NA
   } else if(chol<160){
     points <- 0
@@ -47,7 +47,7 @@ calc_cholesterol_male <- function (chol){  # chol should be numeric
 calc_cholesterol_female <-  function (chol){  # chol should be numeric
   point <- 0
   # chol less 100 or more than 405 returns NA
-  if (chol<100 || chol >405){
+  if (chol<100 || chol >405 || is.na(chol)){
     points <- NA
   } else if(chol<160){
     points <- 0

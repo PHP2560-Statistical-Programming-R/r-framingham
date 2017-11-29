@@ -55,15 +55,21 @@ calc_card_10 <- function(data, ...) {
     mcmapply(df[[params$gender]],
              df[[params$age]],
              df[[params$bmi]],
+             NA,
+             NA,
              df[[params$sbp]],
              df[[params$is_sbp_under_treatment]],
              df[[params$smoking_status]],
              df[[params$diabetes_status]],
              FUN = calc_framingham_points)
-  }else{
+
+  # @TODO add risk and heart age
+
+  }else{ # case when bmi is not used
     data$points =
       mcmapply(df[[params$gender]],
                df[[params$age]],
+               NA,
                df[[params$hdl]],
                df[[params$cholesterol]],
                df[[params$sbp]],
@@ -71,6 +77,8 @@ calc_card_10 <- function(data, ...) {
                df[[params$smoking_status]],
                df[[params$diabetes_status]],
                FUN = calc_framingham_points)
+
+    # @TODO add risk and heart age
 
 }
 
@@ -106,7 +114,7 @@ calc_framingham_points <- function(gender,
 
   # do summation
   #use simple scoring if BMI was added
-  if (!is.na(bmi_points)){
+  if (!is.na(bmi_points)){ # case if BMI is specified
     points <-
       age_points + bmi_points + sbp_points + smoking_points +
       diabetes_points

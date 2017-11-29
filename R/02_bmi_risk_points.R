@@ -9,7 +9,7 @@
 #' calc_bmi_points(bmi)
 
 calc_bmi_points <- function (bmi){
-  if(bmi < 15 || bmi > 50){
+  if(bmi < 15 || bmi > 50 || is.na(bmi)){
     return(NA)
   }else if (bmi < 25){
     return(0)
