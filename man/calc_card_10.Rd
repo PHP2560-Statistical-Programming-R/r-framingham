@@ -26,7 +26,7 @@ calc_card_10(data, ...)
 \item{diabetes_status}{A boolean}
 }
 \value{
-framingham cardivascular risk scores \code{data} and \code{...}
+framingham cardivascular 10 years risk score \code{data} and \code{...}
 }
 \description{
 \code{calc_card_10} returns 10 years cardivascular relative risk score,

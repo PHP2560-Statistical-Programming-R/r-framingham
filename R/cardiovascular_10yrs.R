@@ -15,7 +15,7 @@
 #' @param is_sbp_under_treatment A boolean
 #' @param smoking_status A boolean
 #' @param diabetes_status A boolean
-#' @return framingham cardivascular risk scores \code{data} and \code{...}
+#' @return framingham cardivascular 10 years risk score \code{data} and \code{...}
 #' @examples
 #' # simulate patients data
 #'df <- data.frame(age=sample(30:70,100,rep=TRUE),
