@@ -48,7 +48,7 @@ Example:
 ```
 your_data_frame %>%
 group_by(patient_id) %>%
-summarise( risk_score=framingham_func(gender=gender,age:age,...))
+summarise( risk_score=calc_card_10(gender='gender',age='age',...)) # specify column name
 ```
  
  
@@ -67,6 +67,7 @@ devtools::install_github("PHP2560-Statistical-Programming-R/r-framingham"):
 
 * Nour - literature of Framingham and step 1 to 5
 * Allan - setup r-package project requirements and step 5 to 10
+* Triet Tran - implement bmi and non bmi score and heart age
 
 
 ## Built With
@@ -87,6 +88,7 @@ We use git for versioning. For the versions available, see the [tags on this rep
 
 * **Nour Audi** - *member* - [member](https://github.com/Nour-Audi)
 * **Allan Kimaina** - *member* - [member](https://github.com/kimaina)
+* **Triet Tran** - *member* - [member](https://github.com/ilbsm7)
 
 See also the list of [contributors](https://github.com/PHP2560-Statistical-Programming-R/r-package-apollo) who participated in this project.
 

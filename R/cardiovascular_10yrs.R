@@ -114,7 +114,7 @@ calc_framingham_points <- function(gender,
 
   # do summation
   #use simple scoring if BMI was added
-  if (!is.na(bmi_points)){ # case if BMI is specified
+  if (!is.na(bmi)){ # case if BMI is specified i.e not na
     points <-
       age_points + bmi_points + sbp_points + smoking_points +
       diabetes_points
