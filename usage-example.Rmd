@@ -24,6 +24,7 @@ sample_size <- 100
 # simulate patients data
 df <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  gender=sample(c("M","F"),100,rep=TRUE),
+                 bmi=sample(16:48, sample_size, rep = TRUE),
                  hdl=sample(10:100,sample_size,rep=TRUE),
                  chl=sample(100:400,sample_size,rep=TRUE),
                  sbp=sample(90:200,sample_size,rep=TRUE),
@@ -33,7 +34,7 @@ df <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
 )
 
 # call frisk function
-calc_card_10(df, age="age", gender="gender", cholesterol="chl",
+calc_card_10(df, age="age", gender="gender", cholesterol="chl", 
              hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
              smoking_status="smoking", diabetes_status="diabetes"
 )

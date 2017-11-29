@@ -2,7 +2,7 @@
 % Please edit documentation in R/cardiovascular_10yrs.R
 \name{calc_card_10}
 \alias{calc_card_10}
-\title{cardivascular mortality risk}
+\title{Cardivascular Disease 10 years risk}
 \usage{
 calc_card_10(data, ...)
 }
@@ -12,6 +12,8 @@ calc_card_10(data, ...)
 \item{gender}{A character}
 
 \item{age}{A number}
+
+\item{bmi}{A number}
 
 \item{hdl}{A number}
 
@@ -39,6 +41,7 @@ This package gives an estimate of the probability that a person will develop car
 # simulate patients data
 df <- data.frame(age=sample(30:70,100,rep=TRUE),
               gender=sample(c("M","F"),100,rep=TRUE),
+              bmi=sample(16:48, rep = TRUE),
               hdl=sample(10:100,100,rep=TRUE),
               chl=sample(100:400,100,rep=TRUE),
               sbp=sample(90:200,100,rep=TRUE),
@@ -53,4 +56,8 @@ calc_card_10(df, age="age", gender="gender", cholesterol="chl",
             smoking_status="smoking", diabetes_status="diabetes"
 )
 
+call frisk simple scoring function using BMI
+calc_card_10(df, age="age", gender="gender", bmi= "BMI",
+             sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+            smoking_status="smoking", diabetes_status="diabetes"
 }

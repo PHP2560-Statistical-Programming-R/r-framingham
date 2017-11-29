@@ -9,6 +9,7 @@
 #' @param data A dataframe
 #' @param gender A character
 #' @param age A number
+#' @param bmi A number
 #' @param hdl A number
 #' @param cholesterol A number
 #' @param sbp A number
@@ -20,6 +21,7 @@
 #' # simulate patients data
 #'df <- data.frame(age=sample(30:70,100,rep=TRUE),
 #'               gender=sample(c("M","F"),100,rep=TRUE),
+#'               bmi=sample(16:48, rep = TRUE),
 #'               hdl=sample(10:100,100,rep=TRUE),
 #'               chl=sample(100:400,100,rep=TRUE),
 #'               sbp=sample(90:200,100,rep=TRUE),
@@ -34,6 +36,10 @@
 #'             smoking_status="smoking", diabetes_status="diabetes"
 #' )
 #'
+#'call frisk simple scoring function using BMI
+#'calc_card_10(df, age="age", gender="gender", bmi= "BMI",
+#'              sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+#'             smoking_status="smoking", diabetes_status="diabetes"
 
 
 #' @export
@@ -44,17 +50,29 @@ calc_card_10 <- function(data, ...) {
 
   # calc points
   library(parallel) # enable parallel computing for extremely high speed
+  if (!is.null(params$bmi) ){
   data$points =
     mcmapply(df[[params$gender]],
              df[[params$age]],
-             df[[params$hdl]],
-             df[[params$cholesterol]],
+             df[[params$bmi]],
              df[[params$sbp]],
              df[[params$is_sbp_under_treatment]],
              df[[params$smoking_status]],
              df[[params$diabetes_status]],
              FUN = calc_framingham_points)
+  }else{
+    data$points =
+      mcmapply(df[[params$gender]],
+               df[[params$age]],
+               df[[params$hdl]],
+               df[[params$cholesterol]],
+               df[[params$sbp]],
+               df[[params$is_sbp_under_treatment]],
+               df[[params$smoking_status]],
+               df[[params$diabetes_status]],
+               FUN = calc_framingham_points)
 
+}
 
 
   # return origin df containing new columns: points, risk, heartAge
@@ -64,6 +82,7 @@ calc_card_10 <- function(data, ...) {
 # function that calculate framingham points
 calc_framingham_points <- function(gender,
                                    age,
+                                   bmi,
                                    hdl,
                                    cholesterol,
                                    sbp,
@@ -72,6 +91,8 @@ calc_framingham_points <- function(gender,
                                    diabetes_status) {
   #calculate age points
   age_points <-  calc_age_points(gender, age)
+  #calculate BMI points
+  bmi_points <- calc_bmi_points(bmi)
   #calculate hdl_points
   hdl_points <- calc_hdl_points(hdl)
   #calculate cholesterol_points
@@ -84,10 +105,16 @@ calc_framingham_points <- function(gender,
   diabetes_points <-  calc_diabetes_points(diabetes_status, gender)
 
   # do summation
+  #use simple scoring if BMI was added
+  if (!is.na(bmi_points)){
+    points <-
+      age_points + bmi_points + sbp_points + smoking_points +
+      diabetes_points
+  }else{
   points <-
     age_points + hdl_points + cholesterol_points + sbp_points + smoking_points +
     diabetes_points
-
+  }
   return(points)
 
 
