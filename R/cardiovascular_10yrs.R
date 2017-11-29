@@ -1,4 +1,4 @@
-#' @title cardivascular mortality risk
+#' @title Cardivascular Disease 10 years risk
 #'
 #' @description
 #' \code{calc_card_10} returns 10 years cardivascular relative risk score,
