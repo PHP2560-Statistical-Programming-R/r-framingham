@@ -4,11 +4,10 @@
 \alias{calc_card_10_one}
 \title{Cardivascular Disease 10 years risk for one patient}
 \usage{
-calc_card_10_one(data, ...)
+calc_card_10_one(gender, age, bmi, hdl, cholesterol, sbp,
+  is_sbp_under_treatment, smoking_status, diabetes_status)
 }
 \arguments{
-\item{data}{A dataframe}
-
 \item{gender}{A character}
 
 \item{age}{A number}
@@ -28,36 +27,24 @@ calc_card_10_one(data, ...)
 \item{diabetes_status}{A boolean}
 }
 \value{
-framingham cardivascular 10 years risk score \code{data} and \code{...}
+framingham cardivascular 10 years risk score \code{gender} and \code{...}
 }
 \description{
-\code{calc_card_10_one} returns 10 years cardivascular relative risk score,
+\code{calc_card_10_one} returns 10 years cardivascular relative risk score for a single patient,
 }
 \details{
 This package uses the widely used framingham risk scoring algorithm used to determine an individual's chances of developing cardiovascular disease.
 This package gives an estimate of the probability that a person will develop cardiovascular disease within a specified amount of time (10 years)
 }
 \examples{
-# simulate patients data
-df <- data.frame(age=sample(30:70,100,rep=TRUE),
-              gender=sample(c("M","F"),100,rep=TRUE),
-              bmi=sample(16:48, rep = TRUE),
-              hdl=sample(10:100,100,rep=TRUE),
-              chl=sample(100:400,100,rep=TRUE),
-              sbp=sample(90:200,100,rep=TRUE),
-              isSbpTreated=sample(c(TRUE,FALSE),100,rep=TRUE),
-              smoking=sample(c(TRUE,FALSE),100,rep=TRUE),
-              diabetes=sample(c(TRUE,FALSE),100,rep=TRUE)
-)
-
 # call frisk function
-calc_card_10_one(df, age="age", gender="gender", cholesterol="chl",
-            hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
-            smoking_status="smoking", diabetes_status="diabetes"
+calc_card_10_one(age=45, gender="F", cholesterol=89,
+            hdl=89, sbp=65, is_sbp_under_treatment=TRUE,
+            smoking_status=F, diabetes_status=T
 )
 
 call frisk simple scoring function using BMI
-calc_card_10_one(df, age="age", gender="gender", bmi= "BMI",
-             sbp="sbp", is_sbp_under_treatment="isSbpTreated",
-            smoking_status="smoking", diabetes_status="diabetes"
+calc_card_10_one(age=45, gender="M", bmi= 173,
+             sbp=54, is_sbp_under_treatment=T,
+            smoking_status=F, diabetes_status=T
 }

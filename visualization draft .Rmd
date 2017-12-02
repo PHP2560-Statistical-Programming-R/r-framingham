@@ -19,10 +19,15 @@ dd <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
                  )
 
- calc_card_10_one(dd, age="age", gender="gender", cholesterol="chl", 
-             hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
-             smoking_status="smoking", diabetes_status="diabetes"
+ calc_card_10_one( age=dd$"age",
+                   gender=dd$"gender",
+                   bmi=NA,
+                   cholesterol=dd$"chl",
+                   hdl=dd$"hdl", sbp=dd$"sbp",
+                   is_sbp_under_treatment=dd$"isSbpTreated",
+                   smoking_status=dd$"smoking",
+                   diabetes_status=dd$"diabetes"
 )
 
-dd
+
 ```

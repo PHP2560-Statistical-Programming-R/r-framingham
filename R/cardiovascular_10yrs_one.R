@@ -1,12 +1,11 @@
 #' @title Cardivascular Disease 10 years risk for one patient
 #'
 #' @description
-#' \code{calc_card_10_one} returns 10 years cardivascular relative risk score,
+#' \code{calc_card_10_one} returns 10 years cardivascular relative risk score for a single patient,
 #'
 #' @details
 #' This package uses the widely used framingham risk scoring algorithm used to determine an individual's chances of developing cardiovascular disease.
 #' This package gives an estimate of the probability that a person will develop cardiovascular disease within a specified amount of time (10 years)
-#' @param data A dataframe
 #' @param gender A character
 #' @param age A number
 #' @param bmi A number
@@ -16,79 +15,22 @@
 #' @param is_sbp_under_treatment A boolean
 #' @param smoking_status A boolean
 #' @param diabetes_status A boolean
-#' @return framingham cardivascular 10 years risk score \code{data} and \code{...}
+#' @return framingham cardivascular 10 years risk score \code{gender} and \code{...}
 #' @examples
-#' # simulate patients data
-#'df <- data.frame(age=sample(30:70,100,rep=TRUE),
-#'               gender=sample(c("M","F"),100,rep=TRUE),
-#'               bmi=sample(16:48, rep = TRUE),
-#'               hdl=sample(10:100,100,rep=TRUE),
-#'               chl=sample(100:400,100,rep=TRUE),
-#'               sbp=sample(90:200,100,rep=TRUE),
-#'               isSbpTreated=sample(c(TRUE,FALSE),100,rep=TRUE),
-#'               smoking=sample(c(TRUE,FALSE),100,rep=TRUE),
-#'               diabetes=sample(c(TRUE,FALSE),100,rep=TRUE)
-#')
-#'
-#'# call frisk function
-#'calc_card_10_one(df, age="age", gender="gender", cholesterol="chl",
-#'             hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
-#'             smoking_status="smoking", diabetes_status="diabetes"
+#' # call frisk function
+#' calc_card_10_one(age=45, gender="F", cholesterol=89,
+#'             hdl=89, sbp=65, is_sbp_under_treatment=TRUE,
+#'             smoking_status=F, diabetes_status=T
 #' )
 #'
-#'call frisk simple scoring function using BMI
-#'calc_card_10_one(df, age="age", gender="gender", bmi= "BMI",
-#'              sbp="sbp", is_sbp_under_treatment="isSbpTreated",
-#'             smoking_status="smoking", diabetes_status="diabetes"
+#' call frisk simple scoring function using BMI
+#' calc_card_10_one(age=45, gender="M", bmi= 173,
+#'              sbp=54, is_sbp_under_treatment=T,
+#'             smoking_status=F, diabetes_status=T
 
 
 #' @export
-calc_card_10_one <- function(data, ...) {
-  # check to see if it is a dataframe
-  stopifnot(is.data.frame(data))
-  params <- list(...)
-
-  # calc points
-  library(parallel) # enable parallel computing for extremely high speed
-  if (!is.null(params$bmi) ){
-    data$points =
-      mcmapply(df[[params$gender]],
-               df[[params$age]],
-               df[[params$bmi]],
-               NA,
-               NA,
-               df[[params$sbp]],
-               df[[params$is_sbp_under_treatment]],
-               df[[params$smoking_status]],
-               df[[params$diabetes_status]],
-               FUN = calc_framingham_points_one)
-
-    # @TODO add risk and heart age
-
-  }else{ # case when bmi is not used
-    data$points =
-      mcmapply(df[[params$gender]],
-               df[[params$age]],
-               NA,
-               df[[params$hdl]],
-               df[[params$cholesterol]],
-               df[[params$sbp]],
-               df[[params$is_sbp_under_treatment]],
-               df[[params$smoking_status]],
-               df[[params$diabetes_status]],
-               FUN = calc_framingham_points_one)
-
-    # @TODO add risk and heart age
-
-  }
-
-
-  # return origin df containing new columns: points, risk, heartAge
-  return(data)
-}
-
-# function that calculate framingham points
-calc_framingham_points_one <- function(gender,
+calc_card_10_one <- function(gender,
                                    age,
                                    bmi,
                                    hdl,
@@ -123,11 +65,18 @@ calc_framingham_points_one <- function(gender,
       age_points + hdl_points + cholesterol_points + sbp_points + smoking_points +
       diabetes_points
   }
-  return(points)
+  return(list(
+    points=points,
+    age_points= age_points,
+    hdl_points =hdl_points,
+    cholesterol_points = cholesterol_points,
+    sbp_points=sbp_points,
+    smoking_points =smoking_points,
+    diabetes_points=diabetes_points,
+    bmi_points=bmi_points
+  ))
 
 
 }
 
-calc_other_scores <- function(point) {
 
-}
