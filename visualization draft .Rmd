@@ -6,9 +6,7 @@ output:
     df_print: paged
   word_document: default
 ---
-```{r}
 
-```
 
 ## one patient risk visualization 
 ```{r}
@@ -53,24 +51,21 @@ pp <- as.data.frame(patient1) %>%
 ggradar(pp,
         axis.labels = colnames(pp)[-1],
         centre.y = -2,
-        grid.min = -2,
+        label.centre.y = TRUE,
+        grid.min = 0,
         grid.mid = 8,
         grid.max = 15,
-        grid.line.width = 0.2,
-        grid.label.size = 3,
+        values.radar = c("0", "8", "15"), 
+        grid.line.width = 0.3,
+        grid.label.size = 4,
+        gridline.label.offset = 0,
         axis.label.size = 3,
+        axis.line.colour = "gray40",
+        gridline.max.colour = "black",
         plot.legend = TRUE,
         legend.text.size = 10,
         font.radar = "Arial")
 
-#Example 2 
-library(d3radarR)
-library(scales)
-library(dplyr)
-library(purrr)
-ss <- d3radar(data = pp,
-        width = 5,
-        height = 5
-        )
+
 
 ```
