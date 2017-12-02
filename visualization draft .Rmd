@@ -47,6 +47,7 @@ library(janitor)
 
 pp <- as.data.frame(patient1) %>%
   remove_empty_cols()
+
 #Example 1
 ggradar(pp,
         axis.labels = colnames(pp)[-1],
@@ -66,6 +67,7 @@ ggradar(pp,
         legend.text.size = 10,
         font.radar = "Arial")
 
-
-
+           
 ```
+
+
