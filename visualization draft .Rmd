@@ -8,7 +8,7 @@ output: html_notebook
 ```{r}
 sample_size <- 1
 # simulate patients data
-df1 <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
+dd <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  gender=sample(c("M","F"),sample_size,rep=TRUE),
                  bmi=sample(16:48, sample_size, rep = TRUE),
                  hdl=sample(10:100,sample_size,rep=TRUE),
@@ -19,10 +19,10 @@ df1 <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
                  )
 
- calc_card_10(df1, age="age", gender="gender", cholesterol="chl", 
+ calc_card_10_one(dd, age="age", gender="gender", cholesterol="chl", 
              hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
              smoking_status="smoking", diabetes_status="diabetes"
 )
 
-df1
+dd
 ```

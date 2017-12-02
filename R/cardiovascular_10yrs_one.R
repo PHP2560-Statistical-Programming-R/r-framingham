@@ -76,7 +76,7 @@ calc_card_10_one <- function(data, ...) {
                df[[params$is_sbp_under_treatment]],
                df[[params$smoking_status]],
                df[[params$diabetes_status]],
-               FUN = calc_framingham_points)
+               FUN = calc_framingham_points_one)
 
     # @TODO add risk and heart age
 
