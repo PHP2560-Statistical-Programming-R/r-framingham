@@ -6,7 +6,7 @@ output: html_notebook
 
 ## one patient risk visualization 
 ```{r}
-sample_size <- 100
+sample_size <- 1
 # simulate patients data
 df1 <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  gender=sample(c("M","F"),sample_size,rep=TRUE),
@@ -19,101 +19,10 @@ df1 <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
                  diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
                  )
 
-calc_card_10(df1, age="age", gender="gender", cholesterol="chl", 
+ calc_card_10(df1, age="age", gender="gender", cholesterol="chl", 
              hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
              smoking_status="smoking", diabetes_status="diabetes"
 )
 
-# modify cal_cad10 function to return every paramter point
-calc_card_10_sep <- function(data, ...) {
-  # check to see if it is a dataframe
-  stopifnot(is.data.frame(data))
-  params <- list(...)
-
-  # calc points
-  library(parallel) # enable parallel computing for extremely high speed
-  if (!is.null(params$bmi) ){
-  data$points =
-    mcmapply(df[[params$gender]],
-             df[[params$age]],
-             df[[params$bmi]],
-             NA,
-             NA,
-             df[[params$sbp]],
-             df[[params$is_sbp_under_treatment]],
-             df[[params$smoking_status]],
-             df[[params$diabetes_status]],
-             FUN = calc_framingham_points)
-
-  # @TODO add risk and heart age
-
-  }else{ # case when bmi is not used
-    data$points =
-      mcmapply(df[[params$gender]],
-               df[[params$age]],
-               NA,
-               df[[params$hdl]],
-               df[[params$cholesterol]],
-               df[[params$sbp]],
-               df[[params$is_sbp_under_treatment]],
-               df[[params$smoking_status]],
-               df[[params$diabetes_status]],
-               FUN = calc_framingham_points)
-
-    # @TODO add risk and heart age
-
-}
-
-
-  # return origin df containing new columns: points, risk, heartAge
-  return(data)
-}
-
-# function that calculate framingham points
-calc_framingham_points <- function(gender,
-                                   age,
-                                   bmi,
-                                   hdl,
-                                   cholesterol,
-                                   sbp,
-                                   is_sbp_under_treatment,
-                                   smoking_status,
-                                   diabetes_status) {
-  #calculate age points
-  age_points <-  calc_age_points(gender, age)
-  #calculate BMI points
-  bmi_points <- calc_bmi_points(bmi)
-  #calculate hdl_points
-  hdl_points <- calc_hdl_points(hdl)
-  #calculate cholesterol_points
-  cholesterol_points <- calc_cholesterol_points(gender, cholesterol)
-  #calculate sbp_points
-  sbp_points <- calc_sbp_points(sbp, gender, is_sbp_under_treatment)
-  #calculate smoking_points
-  smoking_points <- calc_smoking_points(smoking_status, gender)
-  #calculate diabetes_points
-  diabetes_points <-  calc_diabetes_points(diabetes_status, gender)
-
-  # do summation
-  #use simple scoring if BMI was added
-  if (!is.na(bmi)){ # case if BMI is specified i.e not na
-    points <-
-      age_points + bmi_points + sbp_points + smoking_points +
-      diabetes_points
-  }else{
-  points <-
-    age_points + hdl_points + cholesterol_points + sbp_points + smoking_points +
-    diabetes_points
-  }
-  return(age_points ,hdl_points , cholesterol_points , sbp_points , smoking_points ,
-    diabetes_points, points)
-
-
-}
-
-calc_card_10_sep(df1, age="age", gender="gender", cholesterol="chl", 
-             hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
-             smoking_status="smoking", diabetes_status="diabetes"
-)
-
+df1
 ```
