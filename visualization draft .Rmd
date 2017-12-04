@@ -33,11 +33,7 @@ patient1 <- calc_card_10_one( age=dd$"age",
                    diabetes_status=dd$"diabetes"
 )
 
-patient1
-```
 
-
-```{r}
 library(ggplot2)
 library(ggradar)
 library(scales)
