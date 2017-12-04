@@ -66,4 +66,49 @@ ggradar(pp,
            
 ```
 
+### 3D Analysis of the effects hdl, sbp and chl on CVD Risk for  100 patients
+```{r}
+# install plotly for this to work
+library(dplyr)
+library(plotly)
+library(frisk)
+sample_size <- 100
+# simulate patients data
+sample <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
+                 gender=sample(c("M","F"),sample_size,rep=TRUE),
+                 bmi=sample(16:48, sample_size, rep = TRUE),
+                 hdl=sample(10:100,sample_size,rep=TRUE),
+                 chl=sample(100:400,sample_size,rep=TRUE),
+                 sbp=sample(90:200,sample_size,rep=TRUE),
+                 isSbpTreated=sample(c(TRUE,FALSE),sample_size,rep=TRUE),
+                 smoking=sample(c(TRUE,FALSE),sample_size,rep=TRUE),
+                 diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
+                 )
+
+ # call frisk function case no bmi
+patients <-calc_card_10(sample, age="age", gender="gender", cholesterol="chl", 
+             hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+             smoking_status="smoking", diabetes_status="diabetes"
+)
+
+#plot the graph
+plot_ly(patients, x = ~chl, y = ~sbp, z = ~hdl,
+        marker = list(color = ~points, colorscale = c('#FFE1A1', '#683531'), showscale = TRUE)) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'cholesterol'),
+                     yaxis = list(title = 'sbp'),
+                     zaxis = list(title = 'hdl')),
+         annotations = list(
+           x = 1.13,
+           y = 1.05,
+           text = 'Effects of hdl, chl and sbp on CVD Risk',
+           xref = 'paper',
+           yref = 'paper',
+           showarrow = FALSE
+         ))
+
+
+
+
+```
 
