@@ -1,0 +1,51 @@
+---
+title: "frisk usage example"
+author: ""
+date: "November 28, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## frisk package usage example
+frisk is a Cardiovascular Risk Scoring package based on the famous framingham study https://www.framinghamheartstudy.org/
+
+here is an example of how to use this package
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# installation
+# install.packages("devtools") #!important
+devtools::install_github("PHP2560-Statistical-Programming-R/r-framingham") 
+# load library
+library(frisk)
+sample_size <- 100
+# simulate patients data
+df <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
+                 gender=sample(c("M","F"),100,rep=TRUE),
+                 bmi=sample(16:48, sample_size, rep = TRUE),
+                 hdl=sample(10:100,sample_size,rep=TRUE),
+                 chl=sample(100:400,sample_size,rep=TRUE),
+                 sbp=sample(90:200,sample_size,rep=TRUE),
+                 isSbpTreated=sample(c(TRUE,FALSE),sample_size,rep=TRUE),
+                 smoking=sample(c(TRUE,FALSE),sample_size,rep=TRUE),
+                 diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
+)
+
+# call frisk function case no bmi
+calc_card_10(df, age="age", gender="gender", cholesterol="chl", 
+             hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+             smoking_status="smoking", diabetes_status="diabetes"
+)
+
+# call frisk function using bmi
+calc_card_10(df, age="age", gender="gender", bmi="bmi",
+             sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+             smoking_status="smoking", diabetes_status="diabetes"
+)
+
+
+
+
+```

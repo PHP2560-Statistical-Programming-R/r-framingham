@@ -1,0 +1,21 @@
+```{r}
+point_convert<-function(points){
+if(gender==M & !is.na(bmi)){
+table<-read.csv('male_simple_risk.csv')
+risk=table[which(table$female_point == points),2]
+heart_age=table[which(table$female_point == points),3]
+} else if (gender==M & is.na(bmi)){
+table<-read.csv('female_risk.csv')
+risk=table[which(table$female_point == points),2]
+heart_age=table[which(table$female_point == points),3] 
+} else if (gender==F & !is.na(bmi)){
+table<-read.csv('female_simple_risk.csv')
+risk=table[which(table$female_point == points),2]
+heart_age=table[which(table$female_point == points),3]  
+} else if (gender==F & is.na(bmi)){
+table<-read.csv('female_risk.csv')
+risk=table[which(table$female_point == points),2]
+heart_age=table[which(table$female_point == points),3]  
+}
+}
+```
