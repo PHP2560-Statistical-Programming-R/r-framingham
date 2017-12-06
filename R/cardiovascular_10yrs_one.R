@@ -80,7 +80,7 @@ calc_card_10_one <- function(gender,
     diabetes_points=diabetes_points,
     bmi_points=bmi_points
   )
-  return(c(list_points,list_risk))
+  return(as.data.frame(c(list_points,list_risk)))
 
 
 }
