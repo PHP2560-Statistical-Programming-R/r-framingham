@@ -60,12 +60,17 @@ calc_card_10_one <- function(gender,
     points <-
       age_points + bmi_points + sbp_points + smoking_points +
       diabetes_points
+
   }else{
     points <-
       age_points + hdl_points + cholesterol_points + sbp_points + smoking_points +
       diabetes_points
   }
-  return(list(
+
+  #calculate heart age and risk
+  list_risk <- point_converter(points,gender,bmi)
+  # create list point
+  list_points <-list(
     points=points,
     age_points= age_points,
     hdl_points =hdl_points,
@@ -74,7 +79,8 @@ calc_card_10_one <- function(gender,
     smoking_points =smoking_points,
     diabetes_points=diabetes_points,
     bmi_points=bmi_points
-  ))
+  )
+  return(c(list_points,list_risk))
 
 
 }

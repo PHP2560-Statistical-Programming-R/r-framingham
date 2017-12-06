@@ -52,35 +52,63 @@ calc_card_10 <- function(data, ...) {
   library(parallel) # enable parallel computing for extremely high speed
   if (!is.null(params$bmi) ){
   data$points =
-    mcmapply(df[[params$gender]],
-             df[[params$age]],
-             df[[params$bmi]],
+    mcmapply(data[[params$gender]],
+             data[[params$age]],
+             data[[params$bmi]],
              NA,
              NA,
-             df[[params$sbp]],
-             df[[params$is_sbp_under_treatment]],
-             df[[params$smoking_status]],
-             df[[params$diabetes_status]],
+             data[[params$sbp]],
+             data[[params$is_sbp_under_treatment]],
+             data[[params$smoking_status]],
+             data[[params$diabetes_status]],
              FUN = calc_framingham_points)
 
-  # @TODO add risk and heart age
+  #calculate f risk
+  data$risk =
+    mcmapply(data$points,
+             data[[params$gender]],
+             data[[params$bmi]],
+             'risk',
+             FUN = specific_point_converter)
+
+  #calculate heart_age
+  data$heart_age =
+    mcmapply(data$points,
+             data[[params$gender]],
+             data[[params$bmi]],
+             'heart_age',
+             FUN = specific_point_converter)
+
 
   }else{ # case when bmi is not used
     data$points =
-      mcmapply(df[[params$gender]],
-               df[[params$age]],
+      mcmapply(data[[params$gender]],
+               data[[params$age]],
                NA,
-               df[[params$hdl]],
-               df[[params$cholesterol]],
-               df[[params$sbp]],
-               df[[params$is_sbp_under_treatment]],
-               df[[params$smoking_status]],
-               df[[params$diabetes_status]],
+               data[[params$hdl]],
+               data[[params$cholesterol]],
+               data[[params$sbp]],
+               data[[params$is_sbp_under_treatment]],
+               data[[params$smoking_status]],
+               data[[params$diabetes_status]],
                FUN = calc_framingham_points)
 
-    # @TODO add risk and heart age
+    #calculate f risk
+    data$risk =
+      mcmapply(data$points,
+               data[[params$gender]],
+               NA,
+               'risk',
+               FUN = specific_point_converter)
 
-}
+    #calculate heart_age
+    data$heart_age =
+      mcmapply(data$points,
+               data[[params$gender]],
+               NA,
+               'heart_age',
+               FUN = specific_point_converter)
+  }
 
 
   # return origin df containing new columns: points, risk, heartAge
@@ -128,6 +156,7 @@ calc_framingham_points <- function(gender,
 
 }
 
-calc_other_scores <- function(point) {
-
+specific_point_converter <- function (points,gender,bmi, type='risk'){
+  data <- point_converter(points,gender,bmi)
+  return(data[[type]])
 }
