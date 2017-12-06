@@ -6,7 +6,10 @@ output:
     df_print: paged
   word_document: default
 ---
-
+```{r}
+devtools::install_github("ricardo-bion/ggradar", 
+                          dependencies=TRUE)
+```
 
 ## one patient risk visualization 
 ```{r}
@@ -33,7 +36,6 @@ patient1 <- calc_card_10_one( age=dd$"age",
                    diabetes_status=dd$"diabetes"
 )
 
-
 library(ggplot2)
 library(ggradar)
 library(scales)
@@ -42,12 +44,13 @@ library(janitor)
 
 
 pp <- as.data.frame(patient1) %>%
-  remove_empty_cols()
+  remove_empty_cols() %>%
+  subset(select = -c(risk, heart_age))
 
 #Example 1
 ggradar(pp,
         axis.labels = colnames(pp)[-1],
-        centre.y = -2,
+        centre.y = -5,
         label.centre.y = TRUE,
         grid.min = 0,
         grid.mid = 8,
