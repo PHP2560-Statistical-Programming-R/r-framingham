@@ -21,20 +21,20 @@ point_converter<-function(points, gender, bmi=NA){
   #convert
   if((gender=="M" || gender=="m") & !is.na(bmi)){
     table<-read.csv('male_simple_risk.csv')
-    risk=table[which(table$female_point == points),2]
-    heart_age=table[which(table$female_point == points),3]
+    risk=table[which(table$male_simple_point == points),3]
+    heart_age=table[which(table$male_simple_point == points),4]
   } else if ((gender=="M" || gender=="m") & is.na(bmi)){
-    table<-read.csv('female_risk.csv')
-    risk=table[which(table$female_point == points),2]
-    heart_age=table[which(table$female_point == points),3]
+    table<-read.csv('male_risk.csv')
+    risk=table[which(table$male_point == points),3]
+    heart_age=table[which(table$male_point == points),4]
   } else if ((gender=="F" || gender=="f") & !is.na(bmi)){
     table<-read.csv('female_simple_risk.csv')
-    risk=table[which(table$female_point == points),2]
-    heart_age=table[which(table$female_point == points),3]
+    risk=table[which(table$female_simple_point == points),3]
+    heart_age=table[which(table$female_simple_point == points),4]
   } else if ((gender=="F" || gender=="f") & is.na(bmi)){
     table<-read.csv('female_risk.csv')
-    risk=table[which(table$female_point == points),2]
-    heart_age=table[which(table$female_point == points),3]
+    risk=table[which(table$female_point == points),3]
+    heart_age=table[which(table$female_point == points),4]
   }
   return(list(
     risk=risk,
