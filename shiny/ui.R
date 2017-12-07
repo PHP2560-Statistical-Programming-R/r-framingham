@@ -1,11 +1,13 @@
 library(shinythemes)
 
+
+
 tagList(
 
   navbarPage(
     # theme = "cerulean",  # <--- To use a theme, uncomment this
     "CVD Risk App",
-    tabPanel("Individual",
+    tabPanel("Individual Risk",
              sidebarPanel(
 
                textInput("txt", "Text input:", "general"),
@@ -32,7 +34,7 @@ tagList(
                  )
              )
     ),
-    tabPanel("Population",
+    tabPanel("Population Risk",
              sidebarPanel(
                fileInput("file", "File input:"),
                textInput("txt", "Text input:", "general"),
@@ -45,7 +47,7 @@ tagList(
              ),
              mainPanel(
                tabsetPanel(
-                 tabPanel("Tab 1",
+                 tabPanel("Visualization",
                           h4("Table"),
                           tableOutput("table"),
                           h4("Verbatim text output"),
@@ -56,7 +58,7 @@ tagList(
                           h4("Header 4"),
                           h5("Header 5")
                  ),
-                 tabPanel("Tab 2", "This panel is intentionally left blank"),
+                 tabPanel("Data Table", "This panel is intentionally left blank"),
                  tabPanel("Tab 3", "This panel is intentionally left blank")
                )
              )
@@ -65,3 +67,5 @@ tagList(
     tabPanel("Settings", shinythemes::themeSelector())
   )
 )
+
+
