@@ -65,8 +65,6 @@ ggradar(pp,
         plot.legend = TRUE,
         legend.text.size = 10,
         font.radar = "Arial")
-
-           
 ```
 
 ### 3D Analysis of the effects hdl, sbp and chl on CVD Risk for  100 patients
@@ -114,4 +112,5 @@ plot_ly(patients, x = ~chl, y = ~sbp, z = ~hdl,
 
 
 ```
+
 
