@@ -10,8 +10,19 @@ tagList(
     tabPanel("Individual Risk",
              sidebarPanel(
 
-               textInput("txt", "Text input:", "general"),
-               sliderInput("slider", "Slider input:", 1, 100, 30),
+               textInput("name", "Name:", "Name"),
+               numericInput("age", "Age:", 0, min = 30, max = 100),
+               numericInput("bmi", "BMI:", 0, min = 10, max = 40),
+               numericInput("HDL", "HDL:", 0, min = 10, max = 100),
+               numericInput("TOTCHOL", "Total Cholesterol:", 0, min = 100, max = 405),
+               numericInput("sbp_treated", "Systolic blood pressure:", 0, min = 90, max = 200),
+               numericInput("sbp_not_treated", "Systolic blood pressure (not treated):", 0, min = 90, max = 200),
+               radioButtons("smoker", "Smoking:",
+                            choices = c("NO","YES"),
+                            selected = "NO"),
+               radioButtons("diabetic", "Diabetic:",
+                            choices = c("NO","YES"),
+                            selected = "NO"),
                tags$h5("Deafult actionButton:"),
                actionButton("action", "Search"),
 
@@ -63,8 +74,7 @@ tagList(
                )
              )
              ),
-    tabPanel("About", "This panel is intentionally left blank"),
-    tabPanel("Settings", shinythemes::themeSelector())
+    tabPanel("About", "This panel is intentionally left blank")
   )
 )
 
