@@ -13,6 +13,7 @@ devtools::install_github("ricardo-bion/ggradar",
 
 ## one patient risk visualization 
 ```{r}
+library(frisk)
 sample_size <- 1
 # simulate patients data
 dd <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
