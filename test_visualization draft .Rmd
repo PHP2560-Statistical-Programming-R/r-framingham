@@ -113,4 +113,304 @@ plot_ly(patients, x = ~chl, y = ~sbp, z = ~hdl,
 
 ```
 
+---
+title: "Capstone"
+author: "Triet Tran"
+date: "November 1, 2017"
+output: html_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("XML")
+install.packages("rebus")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("stringr")
+install.packages("lawstat")
+install.packages("knitr")
+install.packages("broom")
+install.packages("survey")
+install.packages("ResourceSelection")
+install.packages("expm")
+install.packages("markovchain")
+install.packages("diagram")
+install.packages("pracma")
+```
+
+```{r}
+library(XML)
+library(stringr)
+library(rebus)
+library(dplyr)
+library(ggplot2)
+library(lawstat)
+library(broom)
+library(knitr)
+library(survey)
+library(MASS)
+library(ResourceSelection)
+library(expm)
+library(markovchain)
+library(diagram)
+library(pracma)
+```
+
+### Raw data
+
+```{r}
+setwd("C:/Users/Triet Tran/Desktop/Capstone")
+
+ARI<-"http://www.espn.com/mlb/team/stats/batting/_/name/ari/year/2012/seasontype/2/split/37"
+ATL<-"http://www.espn.com/mlb/team/stats/batting/_/name/atl/year/2012/seasontype/2/split/37"
+BAL<-"http://www.espn.com/mlb/team/stats/batting/_/name/bal/year/2012/seasontype/2/split/37"
+BOS<-"http://www.espn.com/mlb/team/stats/batting/_/name/bos/year/2012/seasontype/2/split/37"
+CHC<-"http://www.espn.com/mlb/team/stats/batting/_/name/chc/year/2012/seasontype/2/split/37"
+CHW<-"http://www.espn.com/mlb/team/stats/batting/_/name/chw/year/2012/seasontype/2/split/37"
+CIN<-"http://www.espn.com/mlb/team/stats/batting/_/name/cin/year/2012/seasontype/2/split/37"
+CLE<-"http://www.espn.com/mlb/team/stats/batting/_/name/cle/year/2012/seasontype/2/split/37"
+COL<-"http://www.espn.com/mlb/team/stats/batting/_/name/col/year/2012/seasontype/2/split/37"
+DET<-"http://www.espn.com/mlb/team/stats/batting/_/name/det/year/2012/seasontype/2/split/37"
+HOU<-"http://www.espn.com/mlb/team/stats/batting/_/name/hou/year/2012/seasontype/2/split/37"
+KC<-"http://www.espn.com/mlb/team/stats/batting/_/name/kc/year/2012/seasontype/2/split/37"
+LAA<-"http://www.espn.com/mlb/team/stats/batting/_/name/laa/year/2012/seasontype/2/split/37"
+LAD<-"http://www.espn.com/mlb/team/stats/batting/_/name/lad/year/2012/seasontype/2/split/37"
+MIA<-"http://www.espn.com/mlb/team/stats/batting/_/name/mia/year/2012/seasontype/2/split/37"
+MIL<-"http://www.espn.com/mlb/team/stats/batting/_/name/mil/year/2012/seasontype/2/split/37"
+MIN<-"http://www.espn.com/mlb/team/stats/batting/_/name/min/year/2012/seasontype/2/split/37"
+NYM<-"http://www.espn.com/mlb/team/stats/batting/_/name/nym/year/2012/seasontype/2/split/37"
+NYY<-"http://www.espn.com/mlb/team/stats/batting/_/name/nyy/year/2012/seasontype/2/split/37"
+OAK<-"http://www.espn.com/mlb/team/stats/batting/_/name/oak/year/2012/seasontype/2/split/37"
+PHI<-"http://www.espn.com/mlb/team/stats/batting/_/name/phi/year/2012/seasontype/2/split/37"
+PIT<-"http://www.espn.com/mlb/team/stats/batting/_/name/pit/year/2012/seasontype/2/split/37"
+SD<-"http://www.espn.com/mlb/team/stats/batting/_/name/sd/year/2012/seasontype/2/split/37"
+SF<-"http://www.espn.com/mlb/team/stats/batting/_/name/sf/year/2012/seasontype/2/split/37"
+SEA<-"http://www.espn.com/mlb/team/stats/batting/_/name/sea/year/2012/seasontype/2/split/37"
+STL<-"http://www.espn.com/mlb/team/stats/batting/_/name/stl/year/2012/seasontype/2/split/37"
+TB<-"http://www.espn.com/mlb/team/stats/batting/_/name/tb/year/2012/seasontype/2/split/37"
+TEX<-"http://www.espn.com/mlb/team/stats/batting/_/name/tex/year/2012/seasontype/2/split/37"
+TOR<-"http://www.espn.com/mlb/team/stats/batting/_/name/tor/year/2012/seasontype/2/split/37"
+WSH<-"http://www.espn.com/mlb/team/stats/batting/_/name/wsh/year/2012/seasontype/2/split/37"
+```
+
+### Data collection function
+
+```{r}
+create_data<-function(link){
+for(i in 2002:2017){
+  for(j in c(37,38,39,185,94)){
+pattern_year<-capture (DGT %R% DGT %R% DGT %R% DGT)
+link<-gsub(pattern_year, i, link)
+pattern_situ<-capture ("t/" %R% one_or_more(DGT))
+temp_link<-str_replace(link,pattern_situ,"t/")
+link<-paste(temp_link,j,sep="")
+df <- readHTMLTable(gsub(pattern_year, i, link), header=T, which=1,skip.rows=1, stringsAsFactors=T, na.rm=T)
+df$YEAR=i
+if(j==37){
+df$SITU="NO"
+} else if(j==38){
+  df$SITU="RO"
+} else if(j==39){
+  df$SITU="SP"
+} else if(j==185){
+  df$SITU="SP2O"
+} else {
+  df$SITU="BL"
+}
+write.table(df, file="storage.csv", append=T, sep=",", dec=".", col.names = NA, row.names = T)
+  }
+}
+data<-read.table("storage.csv", sep=",", header=T)
+unlink("storage.csv")
+data$OWAR<-NULL
+data$SB<-NULL
+data$X.1<-NULL
+data$X<-NULL
+data<-subset(data, data$NAME != "NAME" & data$NAME != "Totals" & data$NAME != "Opponents")
+return(data)
+}
+```
+
+```{r}
+#List of teams: ARI,ATL,BAL,BOS,CHC,CHW,CIN,CLE,COL,DET,HOU,KC,LAA,LAD,MIA,MIL,MIN,NYM,NYY,OAK,PHI,PIT,SD,SF,SEA,STL,TB,TEX,TOR,WSH
+data1<-create_data(ARI)
+data1$TEAM<-"ARI"
+data2<-create_data(ATL)
+data2$TEAM<-"ATL"
+data3<-create_data(BAL)
+data3$TEAM<-"BAL"
+data4<-create_data(BOS)
+data4$TEAM<-"BOS"
+data5<-create_data(CHC)
+data5$TEAM<-"CHC"
+data6<-create_data(CHW)
+data6$TEAM<-"CHW"
+data7<-create_data(CIN)
+data7$TEAM<-"CIN"
+data8<-create_data(CLE)
+data8$TEAM<-"CLE"
+data9<-create_data(COL)
+data9$TEAM<-"COL"
+data10<-create_data(DET)
+data10$TEAM<-"DET"
+data11<-create_data(HOU)
+data11$TEAM<-"HOU"
+data12<-create_data(KC)
+data12$TEAM<-"KC"
+data13<-create_data(LAA)
+data13$TEAM<-"LAA"
+data14<-create_data(LAD)
+data14$TEAM<-"LAD"
+data15<-create_data(MIA)
+data15$TEAM<-"MIA"
+data16<-create_data(MIL)
+data16$TEAM<-"MIL"
+data17<-create_data(MIN)
+data17$TEAM<-"MIN"
+data18<-create_data(NYM)
+data18$TEAM<-"NYM"
+data19<-create_data(NYY)
+data19$TEAM<-"NYY"
+data20<-create_data(OAK)
+data20$TEAM<-"OAK"
+data21<-create_data(PHI)
+data21$TEAM<-"PHI"
+data22<-create_data(PIT)
+data22$TEAM<-"PIT"
+data23<-create_data(SD)
+data23$TEAM<-"SD"
+data24<-create_data(SF)
+data24$TEAM<-"SF"
+data25<-create_data(SEA)
+data25$TEAM<-"SEA"
+data26<-create_data(STL)
+data26$TEAM<-"STL"
+data27<-create_data(TB)
+data27$TEAM<-"TB"
+data28<-create_data(TEX)
+data28$TEAM<-"TEX"
+data29<-create_data(TOR)
+data29$TEAM<-"TOR"
+data30<-create_data(WSH)
+data30$TEAM<-"WSH"
+data<-rbind(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10,data11,data12,data13,data14,data15,data16,data17,data18,data19,data20,data21,data22,data23,data24,data25,data26,data27,data28,data29,data30)
+save(data,file="data.rda")
+```
+
+```{r}
+create_overall<-function(link){
+unlink("storage.csv")
+for(i in 2015:2017){
+pattern_year<-capture (DGT %R% DGT %R% DGT %R% DGT)
+link<-gsub(pattern_year, i, link)
+df <- readHTMLTable(link, header=T, which=1,skip.rows=1, stringsAsFactors=T, na.rm=T)
+df$YEAR=i
+write.table(df, file="storage.csv", append=T, sep=",", dec=".", col.names = NA, row.names = T)
+data<-read.table("storage.csv", sep=",", header=T)
+}
+data$OWAR<-NULL
+data$X<-NULL
+data<-read.table("storage.csv", sep=",", header=T)
+data<-subset(data, data$NAME != "NAME" & data$NAME != "Totals" & data$NAME != "Opponents")
+return(data)
+}
+```
+
+```{r}
+ARI<-"http://www.espn.com/mlb/team/stats/batting/_/name/ari/year/2015"
+ATL<-"http://www.espn.com/mlb/team/stats/batting/_/name/atl/year/2015"
+BAL<-"http://www.espn.com/mlb/team/stats/batting/_/name/bal/year/2015"
+BOS<-"http://www.espn.com/mlb/team/stats/batting/_/name/bos/year/2015"
+CHC<-"http://www.espn.com/mlb/team/stats/batting/_/name/chc/year/2015"
+CHW<-"http://www.espn.com/mlb/team/stats/batting/_/name/chw/year/2015"
+CIN<-"http://www.espn.com/mlb/team/stats/batting/_/name/cin/year/2015"
+CLE<-"http://www.espn.com/mlb/team/stats/batting/_/name/cle/year/2015"
+COL<-"http://www.espn.com/mlb/team/stats/batting/_/name/col/year/2015"
+DET<-"http://www.espn.com/mlb/team/stats/batting/_/name/det/year/2015"
+HOU<-"http://www.espn.com/mlb/team/stats/batting/_/name/hou/year/2015"
+KC<-"http://www.espn.com/mlb/team/stats/batting/_/name/kc/year/2015"
+LAA<-"http://www.espn.com/mlb/team/stats/batting/_/name/laa/year/2015"
+LAD<-"http://www.espn.com/mlb/team/stats/batting/_/name/lad/year/2015"
+MIA<-"http://www.espn.com/mlb/team/stats/batting/_/name/mia/year/2015"
+MIL<-"http://www.espn.com/mlb/team/stats/batting/_/name/mil/year/2015"
+MIN<-"http://www.espn.com/mlb/team/stats/batting/_/name/min/year/2015"
+NYM<-"http://www.espn.com/mlb/team/stats/batting/_/name/nym/year/2015"
+NYY<-"http://www.espn.com/mlb/team/stats/batting/_/name/nyy/year/2015"
+OAK<-"http://www.espn.com/mlb/team/stats/batting/_/name/oak/year/2015"
+PHI<-"http://www.espn.com/mlb/team/stats/batting/_/name/phi/year/2015"
+PIT<-"http://www.espn.com/mlb/team/stats/batting/_/name/pit/year/2015"
+SD<-"http://www.espn.com/mlb/team/stats/batting/_/name/sd/year/2015"
+SF<-"http://www.espn.com/mlb/team/stats/batting/_/name/sf/year/2015"
+SEA<-"http://www.espn.com/mlb/team/stats/batting/_/name/sea/year/2015"
+STL<-"http://www.espn.com/mlb/team/stats/batting/_/name/stl/year/2015"
+TB<-"http://www.espn.com/mlb/team/stats/batting/_/name/tb/year/2015"
+TEX<-"http://www.espn.com/mlb/team/stats/batting/_/name/tex/year/2015"
+TOR<-"http://www.espn.com/mlb/team/stats/batting/_/name/tor/year/2015"
+WSH<-"http://www.espn.com/mlb/team/stats/batting/_/name/wsh/year/2015"
+#List of teams: ARI,ATL,BAL,BOS,CHC,CHW,CIN,CLE,COL,DET,HOU,KC,LAA,LAD,MIA,MIL,MIN,NYM,NYY,OAK,PHI,PIT,SD,SF,SEA,STL,TB,TEX,TOR,WSH
+data1<-create_overall(ARI)
+data1$TEAM<-"ARI"
+data2<-create_overall(ATL)
+data2$TEAM<-"ATL"
+data3<-create_overall(BAL)
+data3$TEAM<-"BAL"
+data4<-create_overall(BOS)
+data4$TEAM<-"BOS"
+data5<-create_overall(CHC)
+data5$TEAM<-"CHC"
+data6<-create_overall(CHW)
+data6$TEAM<-"CHW"
+data7<-create_overall(CIN)
+data7$TEAM<-"CIN"
+data8<-create_overall(CLE)
+data8$TEAM<-"CLE"
+data9<-create_overall(COL)
+data9$TEAM<-"COL"
+data10<-create_overall(DET)
+data10$TEAM<-"DET"
+data11<-create_overall(HOU)
+data11$TEAM<-"HOU"
+data12<-create_overall(KC)
+data12$TEAM<-"KC"
+data13<-create_overall(LAA)
+data13$TEAM<-"LAA"
+data14<-create_overall(LAD)
+data14$TEAM<-"LAD"
+data15<-create_overall(MIA)
+data15$TEAM<-"MIA"
+data16<-create_overall(MIL)
+data16$TEAM<-"MIL"
+data17<-create_overall(MIN)
+data17$TEAM<-"MIN"
+data18<-create_overall(NYM)
+data18$TEAM<-"NYM"
+data19<-create_overall(NYY)
+data19$TEAM<-"NYY"
+data20<-create_overall(OAK)
+data20$TEAM<-"OAK"
+data21<-create_overall(PHI)
+data21$TEAM<-"PHI"
+data22<-create_overall(PIT)
+data22$TEAM<-"PIT"
+data23<-create_overall(SD)
+data23$TEAM<-"SD"
+data24<-create_overall(SF)
+data24$TEAM<-"SF"
+data25<-create_overall(SEA)
+data25$TEAM<-"SEA"
+data26<-create_overall(STL)
+data26$TEAM<-"STL"
+data27<-create_overall(TB)
+data27$TEAM<-"TB"
+data28<-create_overall(TEX)
+data28$TEAM<-"TEX"
+data29<-create_overall(TOR)
+data29$TEAM<-"TOR"
+data30<-create_overall(WSH)
+data30$TEAM<-"WSH"
+data_overall<-rbind(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10,data11,data12,data13,data14,data15,data16,data17,data18,data19,data20,data21,data22,data23,data24,data25,data26,data27,data28,data29,data30)
+save(data,file="data_overall.rda")
+```
