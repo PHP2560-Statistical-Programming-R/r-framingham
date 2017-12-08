@@ -1,5 +1,5 @@
 
-
+library(plotly)
 library(shiny)
 
 
@@ -13,7 +13,7 @@ shinyUI(
         "Individual Risk",
         sidebarPanel(
           textInput("name", "Name:", "Name"),
-          numericInput("age", "Age:", 30, min = 30, max = 100),
+          numericInput("age", "Age:", 30, min = 30, max = 74),
           radioButtons(
             "gender",
             "Gender:",
@@ -30,24 +30,24 @@ shinyUI(
           radioButtons(
             "isSbpTreated",
             "is SBP under treatment:",
-            choices = c("NO" = 0, "YES" = 1),
-            selected = 0
+            choices = c("NO" = FALSE, "YES" = TRUE),
+            selected = FALSE
           ),
           radioButtons(
             "smoking_status",
             "Smoking:",
-            choices = c("NO" = 0, "YES" = 1),
-            selected = 0
+            choices = c("NO" = FALSE, "YES" = TRUE),
+            selected = FALSE
           ),
           radioButtons(
             "diabetes_status",
             "Diabetic:",
-            choices = c("NO" = 0, "YES" = 1),
-            selected = 0
+            choices = c("NO" = FALSE, "YES" = TRUE),
+            selected = FALSE
           ),
           tabsetPanel(
             tabPanel("BMI", numericInput(
-              "bmi", "BMI:", 10, min = 10, max = 40
+              "bmi", "BMI:", 15, min = 15, max = 50
             )),
             tabPanel(
               "None-BMI",
@@ -67,36 +67,50 @@ shinyUI(
             tabPanel(
               "Result",
               plotOutput("cvdRadarPlot")
-            )))
+            ),
+            tabPanel(
+              "Data",
+              tableOutput("cvdOneTable")
+            )
+          )
+        )
       ),
       tabPanel(
         "Population Risk",
         sidebarPanel(
-          fileInput("file", "File input:"),
-          textInput("txt", "Text input:", "general"),
-          sliderInput("slider", "Slider input:", 1, 100, 30),
-          tags$h5("Deafult actionButton:"),
-          actionButton("action", "Search"),
+          tabsetPanel( id = "populationTab",
+            tabPanel("Simulation", value="simulation",
+                     sliderInput("sample_size", "Sample Size:", 1, 100, 50)
+            ),
+            tabPanel(
+              "Upload Data", value="upload",
+              fileInput('file1', 'Choose CSV File',
+                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv'))
+              ,
+              tags$hr(),
+              checkboxInput('header', 'Header', TRUE),
+              radioButtons('sep', 'Separator',
+                           c(Comma=',',
+                             Semicolon=';',
+                             Tab='\t'),
+                           ','),
+              radioButtons('quote', 'Quote',
+                           c(None='',
+                             'Double Quote'='"',
+                             'Single Quote'="'"),
+                           '"')
+            )
+          )
 
-          tags$h5("actionButton with CSS class:"),
-          actionButton("action2", "Action button", class = "btn-primary")
         ),
         mainPanel(
           tabsetPanel(
             tabPanel(
               "Visualization",
-              h4("Table"),
-              tableOutput("table"),
-              h4("Verbatim text output"),
-              verbatimTextOutput("txtout"),
-              h1("Header 1"),
-              h2("Header 2"),
-              h3("Header 3"),
-              h4("Header 4"),
-              h5("Header 5")
+              plotlyOutput("cvdPopulationPlot")
+
             ),
-            tabPanel("Data Table", "This panel is intentionally left blank"),
-            tabPanel("Tab 3", "This panel is intentionally left blank")
+            tabPanel("Data Table", tableOutput(outputId = 'table.output'))
           )
         )
       ),

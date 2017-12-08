@@ -3,6 +3,7 @@ library(ggplot2)
 library(ggradar)
 library(scales)
 library(dplyr)
+library(plotly)
 library(janitor)
 # install.packages("devtools") #!important
 devtools::install_github("PHP2560-Statistical-Programming-R/r-framingham")
@@ -30,18 +31,56 @@ shinyServer(function(input, output, session) {
   })
 
 
+  output$cvdOneTable <- renderTable({
+    # calculate cvd for a single person
+    cvd_single <- cvd_single_person(input)
+
+    return(head(cvd_single$data))
+  })
+
+  # individual Population plot
+  output$cvdPopulationPlot <- renderPlotly({
+    if(input$populationTab=="simulation"){
+      # calculate cvd for a single person
+      cvd_population <- cvd_population(input)
+
+      return(cvd_population$plot)
+    } else {
+      return(plot_ly())
+    }
+
+  })
+
+
+  # check if population
+
+
+  # upload data and render on table
+  output$table.output <- renderTable({
+    if(input$populationTab=="upload"){
+
+      return(uploadFile(input))
+    } else{
+      cvd_population <- cvd_population(input)
+
+      return(cvd_population$data)
+    }
+  })
+
+
+
 })
 
 #' @title cvd_single_person
 #' @description
 #' \code{cvd_single_person} returns relative risk and heart age
-#' @param gender A character
-#' @param points A number
+#' @param input A dataframe
 #' @return list of data and plot
 cvd_single_person <- function (input) {
 
   # call cvd risk function
-  patient1 <- calc_card_10_one(
+  print(input$smoking_status)
+  patentCvd <- calc_card_10_one(
     age = input$"age",
     gender = input$"gender",
     bmi = NA,
@@ -52,16 +91,21 @@ cvd_single_person <- function (input) {
     smoking_status = input$"smoking_status",
     diabetes_status = input$"diabetes_status"
   )
+  print(head(patentCvd))
 
   # clean data
-  pp <- as.data.frame(patient1) %>%
+  cleanPatentCvd <- as.data.frame(patentCvd) %>%
     remove_empty_cols() %>%
     subset(select = -c(risk, heart_age))
+  # outputCvd
+  outputCvd <- as.data.frame(patentCvd) %>%
+    remove_empty_cols() %>%
+    subset(select = c(points, risk, heart_age))
 
   # radar plot
   plot_radar <- ggradar(
-    pp,
-    axis.labels = colnames(pp)[-1],
+    cleanPatentCvd,
+    axis.labels = colnames(cleanPatentCvd)[-1],
     centre.y = -5,
     label.centre.y = TRUE,
     grid.min = 0,
@@ -80,7 +124,72 @@ cvd_single_person <- function (input) {
   )
 
   return(list(plot = plot_radar,
-              data = patient1))
+              data = outputCvd)
+         )
+}
+
+#' @title cvd_population
+#' @description
+#' \code{cvd_population} returns relative risk and heart age of a population
+#' @param input A dataframe
+#' @return list of data and plot
+cvd_population <- function (input) {
+
+  sample_size <- input$sample_size
+  # simulate patients data
+  sample <- data.frame(age=sample(30:70,sample_size,rep=TRUE),
+                       gender=sample(c("M","F"),sample_size,rep=TRUE),
+                       bmi=sample(16:48, sample_size, rep = TRUE),
+                       hdl=sample(10:100,sample_size,rep=TRUE),
+                       chl=sample(100:400,sample_size,rep=TRUE),
+                       sbp=sample(90:200,sample_size,rep=TRUE),
+                       isSbpTreated=sample(c(TRUE,FALSE),sample_size,rep=TRUE),
+                       smoking=sample(c(TRUE,FALSE),sample_size,rep=TRUE),
+                       diabetes=sample(c(TRUE,FALSE),sample_size,rep=TRUE)
+  )
+
+  # call frisk function case no bmi
+  patients <-calc_card_10(sample, age="age", gender="gender", cholesterol="chl",
+                          hdl="hdl", sbp="sbp", is_sbp_under_treatment="isSbpTreated",
+                          smoking_status="smoking", diabetes_status="diabetes"
+  )
+
+  #plot the graph
+  plot_graph <- plot_ly(patients, x = ~chl, y = ~sbp, z = ~hdl,
+          marker = list(color = ~points, colorscale = c('#FFE1A1', '#683531'), showscale = TRUE)) %>%
+    add_markers() %>%
+    layout(scene = list(xaxis = list(title = 'cholesterol'),
+                        yaxis = list(title = 'sbp'),
+                        zaxis = list(title = 'hdl')),
+           annotations = list(
+             x = 1.13,
+             y = 1.05,
+             text = 'Effects of hdl, chl and sbp on CVD Risk',
+             xref = 'paper',
+             yref = 'paper',
+             showarrow = FALSE
+           ))
+
+  return(list(plot = plot_graph,
+              data = patients)
+  )
+}
 
 
+# helper function to upload
+uploadFile <- function(input){
+  inFile <- input$file1
+
+  if (is.null(inFile))
+    return(NULL)
+  tbl <-  read.csv(
+    inFile$datapath,
+    header = input$header,
+    sep = input$sep,
+    quote = input$quote
+  )
+  return(
+    tbl ^ 2
+
+  )
 }
