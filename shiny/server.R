@@ -5,7 +5,7 @@ library(scales)
 library(dplyr)
 library(janitor)
 # install.packages("devtools") #!important
-#devtools::install_github("PHP2560-Statistical-Programming-R/r-framingham")
+devtools::install_github("PHP2560-Statistical-Programming-R/r-framingham")
 # load frisk library
 library(frisk)
 
@@ -24,30 +24,11 @@ shinyServer(function(input, output, session) {
   # individual person plot
   output$cvdRadarPlot <- renderPlot({
     # calculate cvd for a single person
-    cvd_single <- cvd_single_person(1)
+    cvd_single <- cvd_single_person(input)
 
     return(cvd_single$plot)
   })
 
-  output$cvdTable <- renderTable({
-    # calculate cvd for a single person
-    sample_size <- 100
-    dd <- data.frame(
-      age = sample(30:70, sample_size, rep = TRUE),
-      gender = sample(c("M", "F"), sample_size, rep = TRUE),
-      bmi = sample(16:48, sample_size, rep = TRUE),
-      hdl = sample(10:100, sample_size, rep = TRUE),
-      chl = sample(100:400, sample_size, rep = TRUE),
-      sbp = sample(90:200, sample_size, rep = TRUE),
-      isSbpTreated = sample(c(TRUE, FALSE), sample_size, rep =
-                              TRUE),
-      smoking = sample(c(TRUE, FALSE), sample_size, rep = TRUE),
-      diabetes = sample(c(TRUE, FALSE), sample_size, rep =
-                          TRUE)
-    )
-    return(dd)
-
-  })
 
 })
 
@@ -57,32 +38,19 @@ shinyServer(function(input, output, session) {
 #' @param gender A character
 #' @param points A number
 #' @return list of data and plot
-cvd_single_person <- function (sample_size=100) {
-  # simulate patients data
-  dd <- data.frame(
-    age = sample(30:70, sample_size, rep = TRUE),
-    gender = sample(c("M", "F"), sample_size, rep = TRUE),
-    bmi = sample(16:48, sample_size, rep = TRUE),
-    hdl = sample(10:100, sample_size, rep = TRUE),
-    chl = sample(100:400, sample_size, rep = TRUE),
-    sbp = sample(90:200, sample_size, rep = TRUE),
-    isSbpTreated = sample(c(TRUE, FALSE), sample_size, rep =
-                            TRUE),
-    smoking = sample(c(TRUE, FALSE), sample_size, rep = TRUE),
-    diabetes = sample(c(TRUE, FALSE), sample_size, rep =
-                        TRUE)
-  )
+cvd_single_person <- function (input) {
+
   # call cvd risk function
   patient1 <- calc_card_10_one(
-    age = dd$"age",
-    gender = dd$"gender",
+    age = input$"age",
+    gender = input$"gender",
     bmi = NA,
-    cholesterol = dd$"chl",
-    hdl = dd$"hdl",
-    sbp = dd$"sbp",
-    is_sbp_under_treatment = dd$"isSbpTreated",
-    smoking_status = dd$"smoking",
-    diabetes_status = dd$"diabetes"
+    cholesterol = input$"cholesterol",
+    hdl = input$"hdl",
+    sbp = input$"sbp",
+    is_sbp_under_treatment = input$"isSbpTreated",
+    smoking_status = input$"smoking_status",
+    diabetes_status = input$"diabetes_status"
   )
 
   # clean data
