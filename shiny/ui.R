@@ -2,16 +2,33 @@
 library(plotly)
 library(shiny)
 
+# load css library
+devtools::install_github('andrewsali/shinycssloaders')
+library(shinycssloaders)
+
+
+# for spinners 2-3 match the background color of wellPanel
+options(spinner.color.background="#F5F5F5")
+
+# Custom user friendly error css
+css <- "
+.shiny-output-error { visibility: hidden; }
+.shiny-output-error:before {
+  visibility: visible;
+  content: 'An error occurred. Please check your input data for validation.'; }
+}"
 
 # Define UI for application
 shinyUI(
 
   tagList(
+    #initialize css
+    tags$style(type="text/css", css),
     navbarPage(
       "CVD Risk App",
       tabPanel(
         "Individual Risk",
-        sidebarPanel(
+        sidebarPanel(style = "overflow-y:scroll; max-height: 550px",
           textInput("name", "Name:", "Name"),
           numericInput("age", "Age:", 30, min = 30, max = 74),
           radioButtons(
@@ -45,12 +62,12 @@ shinyUI(
             choices = c("NO" = FALSE, "YES" = TRUE),
             selected = FALSE
           ),
-          tabsetPanel(
-            tabPanel("BMI", numericInput(
+          tabsetPanel(  id = "bmiTab",
+            tabPanel("BMI", value="bmi", numericInput(
               "bmi", "BMI:", 15, min = 15, max = 50
             )),
             tabPanel(
-              "None-BMI",
+              "None-BMI",  value="nonBmi",
               numericInput("hdl", "HDL:", 10, min = 10, max = 100),
               numericInput(
                 "cholesterol",
@@ -66,11 +83,21 @@ shinyUI(
           tabsetPanel(
             tabPanel(
               "Result",
-              plotOutput("cvdRadarPlot")
+
+              # plot the radar plot
+              fluidRow(withSpinner(
+                plotOutput("cvdRadarPlot"),
+                type = 4
+              ))
             ),
             tabPanel(
               "Data",
-              tableOutput("cvdOneTable")
+
+              # plot data
+              fluidRow(withSpinner(
+                tableOutput("cvdOneTable"),
+                type = 4
+              ))
             )
           )
         )
@@ -80,7 +107,7 @@ shinyUI(
         sidebarPanel(
           tabsetPanel( id = "populationTab",
             tabPanel("Simulation", value="simulation",
-                     sliderInput("sample_size", "Sample Size:", 1, 100, 50)
+                     sliderInput("sample_size", "Sample Size:", 1, 500, 50)
             ),
             tabPanel(
               "Upload Data", value="upload",
@@ -107,14 +134,33 @@ shinyUI(
           tabsetPanel(
             tabPanel(
               "Visualization",
-              plotlyOutput("cvdPopulationPlot")
+
+              # plot 3d plot
+              fluidRow(withSpinner(
+                plotlyOutput("cvdPopulationPlot"),
+                type = 4
+              ))
+
 
             ),
-            tabPanel("Data Table", tableOutput(outputId = 'table.output'))
+            tabPanel("Data Table",
+
+                     # plot the data table
+                     fluidRow(withSpinner(
+                       dataTableOutput(outputId = 'cvdPopulationDT'),
+                       type = 4
+                     ))
+
+                  )
           )
         )
       ),
-      tabPanel("About", "This panel is intentionally left blank")
+
+      # Tab about the app and authors
+      tabPanel("About", "This panel is intentionally left blank: TODO Add info")
     )
   )
 )
+
+
+

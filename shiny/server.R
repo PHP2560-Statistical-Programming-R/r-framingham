@@ -14,7 +14,7 @@ library(frisk)
 shinyServer(function(input, output, session) {
 
 
-  #
+  # render output text
   output$txtout <- renderText({
     paste(input$txt, input$slider, format(input$date), sep = ", ")
   })
@@ -56,7 +56,7 @@ shinyServer(function(input, output, session) {
 
 
   # upload data and render on table
-  output$table.output <- renderTable({
+  output$cvdPopulationDT <- renderDataTable({
     if(input$populationTab=="upload"){
 
       return(uploadFile(input))
@@ -65,7 +65,7 @@ shinyServer(function(input, output, session) {
 
       return(cvd_population$data)
     }
-  })
+  },options = list(scrollX = TRUE))
 
 
 
@@ -79,18 +79,33 @@ shinyServer(function(input, output, session) {
 cvd_single_person <- function (input) {
 
   # call cvd risk function
-  print(input$smoking_status)
-  patentCvd <- calc_card_10_one(
-    age = input$"age",
-    gender = input$"gender",
-    bmi = NA,
-    cholesterol = input$"cholesterol",
-    hdl = input$"hdl",
-    sbp = input$"sbp",
-    is_sbp_under_treatment = input$"isSbpTreated",
-    smoking_status = input$"smoking_status",
-    diabetes_status = input$"diabetes_status"
-  )
+  if(input$bmiTab=="nonBmi"){
+    # call cvd risk function
+      patentCvd <- calc_card_10_one(
+        age = input$"age",
+        gender = input$"gender",
+        bmi = NA,
+        cholesterol = input$"cholesterol",
+        hdl = input$"hdl",
+        sbp = input$"sbp",
+        is_sbp_under_treatment = input$"isSbpTreated",
+        smoking_status = input$"smoking_status",
+        diabetes_status = input$"diabetes_status"
+      )
+  } else {
+    # call cvd risk function
+    patentCvd <- calc_card_10_one(
+      age = input$"age",
+      gender = input$"gender",
+      bmi = input$"bmi",
+      cholesterol = NA,
+      hdl = NA,
+      sbp = input$"sbp",
+      is_sbp_under_treatment = input$"isSbpTreated",
+      smoking_status = input$"smoking_status",
+      diabetes_status = input$"diabetes_status"
+    )
+  }
   print(head(patentCvd))
 
   # clean data
@@ -193,3 +208,4 @@ uploadFile <- function(input){
 
   )
 }
+
