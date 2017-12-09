@@ -18,6 +18,8 @@ shinyServer(function(input, output, session) {
   output$txtout <- renderText({
     paste(input$txt, input$slider, format(input$date), sep = ", ")
   })
+
+  # render output table - testdata
   output$table <- renderTable({
     head(cars, 4)
   })
@@ -26,19 +28,30 @@ shinyServer(function(input, output, session) {
   output$cvdRadarPlot <- renderPlot({
     # calculate cvd for a single person
     cvd_single <- cvd_single_person(input)
-
     return(cvd_single$plot)
   })
 
-
+  # render cvd table for single person tab
   output$cvdOneTable <- renderTable({
     # calculate cvd for a single person
     cvd_single <- cvd_single_person(input)
-
     return(head(cvd_single$data))
   })
 
-  # individual Population plot
+  # render cvd text for single person tab
+  output$cvdOneText <- renderText({
+    # calculate cvd for a single person
+    cvd_single <- cvd_single_person(input)
+    resultData <- as.list(cvd_single$data)
+
+    paste('Dear', input$name,
+          'your estimated 10 years risk of having a Cardiovascular disease is',
+          resultData$risk, 'out of 10.',
+          'Due to your risk factors, your heart age is:',
+          resultData$heart_age, 'years.', sep = " ")
+  })
+
+  # Population plot
   output$cvdPopulationPlot <- renderPlotly({
     if(input$populationTab=="simulation"){
       # calculate cvd for a single person
@@ -50,10 +63,6 @@ shinyServer(function(input, output, session) {
     }
 
   })
-
-
-  # check if population
-
 
   # upload data and render on table
   output$cvdPopulationDT <- renderDataTable({

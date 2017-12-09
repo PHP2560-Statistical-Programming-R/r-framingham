@@ -27,16 +27,26 @@ shinyUI(
     navbarPage(
       "CVD Risk App",
       tabPanel(
+
+        # title
         "Individual Risk",
         sidebarPanel(style = "overflow-y:scroll; max-height: 550px",
-          textInput("name", "Name:", "Name"),
+
+          # persone name input text
+          textInput("name", "Name:", "_"),
+
+          # numeric input for age
           numericInput("age", "Age:", 30, min = 30, max = 74),
+
+          # gender option button
           radioButtons(
             "gender",
             "Gender:",
             choices = c("Male" = "M", "Female" = "F"),
             selected = "M"
           ),
+
+          # sbp numeric input
           numericInput(
             "sbp",
             "Systolic blood pressure:",
@@ -44,18 +54,24 @@ shinyUI(
             min = 90,
             max = 200
           ),
+
+          # SBP under treatment option button
           radioButtons(
             "isSbpTreated",
             "is SBP under treatment:",
             choices = c("NO" = FALSE, "YES" = TRUE),
             selected = FALSE
           ),
+
+          # Smoking option button
           radioButtons(
             "smoking_status",
             "Smoking:",
             choices = c("NO" = FALSE, "YES" = TRUE),
             selected = FALSE
           ),
+
+          # diabetes option button
           radioButtons(
             "diabetes_status",
             "Diabetic:",
@@ -63,9 +79,13 @@ shinyUI(
             selected = FALSE
           ),
           tabsetPanel(  id = "bmiTab",
+
+            # tab panel for bmi
             tabPanel("BMI", value="bmi", numericInput(
               "bmi", "BMI:", 15, min = 15, max = 50
             )),
+
+            # tab panel for non-bmi
             tabPanel(
               "None-BMI",  value="nonBmi",
               numericInput("hdl", "HDL:", 10, min = 10, max = 100),
@@ -88,7 +108,9 @@ shinyUI(
               fluidRow(withSpinner(
                 plotOutput("cvdRadarPlot"),
                 type = 4
-              ))
+              ),
+              textOutput("cvdOneText")
+              )
             ),
             tabPanel(
               "Data",
@@ -97,7 +119,11 @@ shinyUI(
               fluidRow(withSpinner(
                 tableOutput("cvdOneTable"),
                 type = 4
-              ))
+              )
+
+              # Display output text
+
+              )
             )
           )
         )
@@ -106,21 +132,28 @@ shinyUI(
         "Population Risk",
         sidebarPanel(
           tabsetPanel( id = "populationTab",
+             # slider for sample size
             tabPanel("Simulation", value="simulation",
                      sliderInput("sample_size", "Sample Size:", 1, 500, 50)
             ),
+            # upload panel for csv
             tabPanel(
               "Upload Data", value="upload",
               fileInput('file1', 'Choose CSV File',
                         accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv'))
               ,
               tags$hr(),
+
+              # headr checkbox
               checkboxInput('header', 'Header', TRUE),
+
+              # separator
               radioButtons('sep', 'Separator',
                            c(Comma=',',
                              Semicolon=';',
                              Tab='\t'),
                            ','),
+              # quote
               radioButtons('quote', 'Quote',
                            c(None='',
                              'Double Quote'='"',
