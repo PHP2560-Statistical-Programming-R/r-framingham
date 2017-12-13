@@ -8,10 +8,11 @@
 #' @examples
 #' calc_bmi_points(bmi)
 
+# function to calculate BMI points
 calc_bmi_points <- function (bmi){
-  if(bmi < 15 || bmi > 50 || is.na(bmi)){
+  if(bmi < 15 || bmi > 50 || is.na(bmi)){ #specify cases when BMI point will return NA)
     return(NA)
-  }else if (bmi < 25){
+  }else if (bmi < 25){ #specify BMI groups
     return(0)
   }else if (bmi >= 25 && bmi < 30){
     return(1)

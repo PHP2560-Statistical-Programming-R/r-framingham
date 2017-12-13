@@ -48,9 +48,9 @@ calc_card_10 <- function(data, ...) {
   stopifnot(is.data.frame(data))
   params <- list(...)
 
-  # calc points
+  # calculate points
   library(parallel) # enable parallel computing for extremely high speed
-  if (!is.null(params$bmi) ){
+  if (!is.null(params$bmi) ){ # case when BMI is used
   data$points =
     mcmapply(data[[params$gender]],
              data[[params$age]],
@@ -63,7 +63,7 @@ calc_card_10 <- function(data, ...) {
              data[[params$diabetes_status]],
              FUN = calc_framingham_points)
 
-  #calculate f risk
+  #calculate coronary risk
   data$risk =
     mcmapply(data$points,
              data[[params$gender]],
@@ -71,7 +71,7 @@ calc_card_10 <- function(data, ...) {
              'risk',
              FUN = specific_point_converter)
 
-  #calculate heart_age
+  #calculate heart age
   data$heart_age =
     mcmapply(data$points,
              data[[params$gender]],
@@ -93,7 +93,7 @@ calc_card_10 <- function(data, ...) {
                data[[params$diabetes_status]],
                FUN = calc_framingham_points)
 
-    #calculate f risk
+    #calculate coronary risk
     data$risk =
       mcmapply(data$points,
                data[[params$gender]],
@@ -101,7 +101,7 @@ calc_card_10 <- function(data, ...) {
                'risk',
                FUN = specific_point_converter)
 
-    #calculate heart_age
+    #calculate heart age
     data$heart_age =
       mcmapply(data$points,
                data[[params$gender]],
@@ -146,7 +146,7 @@ calc_framingham_points <- function(gender,
     points <-
       age_points + bmi_points + sbp_points + smoking_points +
       diabetes_points
-  }else{
+  }else{ #case if BMI is not specified
   points <-
     age_points + hdl_points + cholesterol_points + sbp_points + smoking_points +
     diabetes_points

@@ -12,16 +12,16 @@
 calc_diabetes_points <- function (status, gender){
   if(gender=="M" || gender=="m"){
     # logic for male
-    if(status==TRUE){
+    if(status==TRUE){ #logic for diabetes
       return(3)
-    } else {
+    } else { #logic for no diabetes
       return(0)
     }
   }else{
     # logic for female
-    if(status==TRUE){
+    if(status==TRUE){ #logic for diabetes
       return(4)
-    } else {
+    } else { #logic for no diabetes
       return(0)
     }
   }

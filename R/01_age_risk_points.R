@@ -13,6 +13,8 @@
 #' calc_age_points(gender='M', age=50)
 #' calc_age_points(gender='F', age=48)
 #' calc_age_points(gender='f', age=35)
+
+# function to calculate age points for any gender
 calc_age_points <- function (gender,age){
   points <- 0
   # logic
@@ -31,7 +33,7 @@ calc_age_points <- function (gender,age){
 calc_age_male <- function (age){  # age should be numeric
 
   # age less 30 or more than 74 returns NA ~ cardivascular risk score not applicable to < 30 | > 74
-  if (age<30 || age >74){
+  if (age<30 || age >74){ #age group specific
     points <- NA
   } else if(age>=30 && age<=34){
     points <- 0
@@ -60,7 +62,7 @@ calc_age_male <- function (age){  # age should be numeric
 calc_age_female <- function (age){ # age should be numeric
   point <- 0
   # age less 30 or more than 74 returns NA ~ cardivascular risk score not applicable to < 30 | > 74
-  if (age<30 || age >74){
+  if (age<30 || age >74){ #age group specific
     points <- NA
   } else if(age>=30 && age<=34){
     points <- 0

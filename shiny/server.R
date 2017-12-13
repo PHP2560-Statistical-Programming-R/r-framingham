@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
 
   # Population plot
   output$cvdPopulationPlot <- renderPlotly({
-    if(input$populationTab=="simulation"){
+    if(input$populationTab=="simulation"){ #specify input for plot option
       # calculate cvd for a single person
       cvd_population <- cvd_population(input)
 
@@ -79,7 +79,7 @@ shinyServer(function(input, output, session) {
 
   # upload data and render on table
   output$cvdPopulationDT <- renderDataTable({
-    if(input$populationTab=="upload"){
+    if(input$populationTab=="upload"){ #specify input for upload and table option
 
       return(uploadFile(input))
     } else{
@@ -101,7 +101,7 @@ shinyServer(function(input, output, session) {
 cvd_single_person <- function (input) {
 
   # call cvd risk function
-  if(input$bmiTab=="nonBmi"){
+  if(input$bmiTab=="nonBmi"){ #specify calculation using no BMI of points
     # call cvd risk function
       patentCvd <- calc_card_10_one(
         age = input$"age",
@@ -114,7 +114,7 @@ cvd_single_person <- function (input) {
         smoking_status = input$"smoking_status",
         diabetes_status = input$"diabetes_status"
       )
-  } else {
+  } else { #specify calculation using BMI
     # call cvd risk function
     patentCvd <- calc_card_10_one(
       age = input$"age",
@@ -191,7 +191,7 @@ cvd_population <- function (input) {
                           smoking_status="smoking", diabetes_status="diabetes"
   )
 
-  #plot the graph
+  #plot the graph of distribution of cholesterol, systolic blood pressure and HDL
   plot_graph <- plot_ly(patients, x = ~chl, y = ~sbp, z = ~hdl,
           marker = list(color = ~points, colorscale = c('#FFE1A1', '#683531'), showscale = TRUE)) %>%
     add_markers() %>%

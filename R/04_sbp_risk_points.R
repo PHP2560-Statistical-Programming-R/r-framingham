@@ -12,7 +12,7 @@
 #' calc_sbp_points(sbp, gender)
 
 calc_sbp_points <- function (sbp, gender, isTreated= FALSE){
-  points <- 0
+  points <- 0 # set default point to be 0
   # logic
   if(gender=="M" || gender=="m"){
     # call function for male
@@ -26,11 +26,11 @@ calc_sbp_points <- function (sbp, gender, isTreated= FALSE){
 
 # this is a male specific function that takes in SBP and treatment status and return Framingham CAD 10 years risk points
 calc_sbp_male <- function (sbp, isTreated){ # SBP is neumeric and isTreated is boolean
-  points <- 0
+  points <- 0 # set default point to be 0
   # SBP less than 90 or more than 200 return NA ~  people with SBP outside the range of 90-200 is ineligible for framingham CAD10 risk score
   if (sbp < 90 || sbp > 200){
     points <- NA
-  }else if (sbp >=  90 && sbp <  120 && isTreated== FALSE){
+  }else if (sbp >=  90 && sbp <  120 && isTreated== FALSE){ #specify sbp level and whether treated or not treated
     points <- -2
   }else if (sbp >= 120 && sbp <= 129 && isTreated== FALSE){
     points <-  0
@@ -56,11 +56,11 @@ calc_sbp_male <- function (sbp, isTreated){ # SBP is neumeric and isTreated is b
 
 # this is a female specific function that takes in SBP and treatment status and return Framingham CAD 10 years risk points
 calc_sbp_female <- function (sbp, isTreated=FALSE){ # SBP is neumeric and isTreated is boolean
-  points <- 0
+  points <- 0 # set default point to be 0
   # SBP less than 90 or more than 200 return NA ~  people with SBP outside the range of 90-200 is ineligible for framingham CAD10 risk score
   if (sbp < 90 || sbp > 200){
     points <- NA
-  }else if (sbp >=  90 && sbp <  120 && isTreated== FALSE){
+  }else if (sbp >=  90 && sbp <  120 && isTreated== FALSE){ # specify sbp level and whether it is treated or not treated
     points <- -3
   }else if (sbp >= 120 && sbp <= 129 && isTreated== FALSE){
     points <-  0

@@ -9,7 +9,7 @@
 #' @examples
 #' calc_cholesterol_points(gender='f', chol=35)
 calc_cholesterol_points <- function (gender,chol){
-  points <- 0
+  points <- 0 # set default point to be 0
   # logic
   if(gender=="M" || gender=="m"){
     # call function for male
@@ -24,11 +24,11 @@ calc_cholesterol_points <- function (gender,chol){
 
 # this male specific function takes in chol and returns framingham CAD10 yeras risk points
 calc_cholesterol_male <- function (chol){  # chol should be numeric
-  point <- 0
+  point <- 0 #set default point to be 0
   # chol less 100 or more than 405 returns NA
   if (chol<100 || chol >405|| is.na(chol)){
     points <- NA
-  } else if(chol<160){
+  } else if(chol<160){ # specify cholesterol level case by case
     points <- 0
   } else if(chol>=160 && chol<=199){
     points <- 1
@@ -45,11 +45,11 @@ calc_cholesterol_male <- function (chol){  # chol should be numeric
 
 # this female specific function takes in chol and returns framingham CAD10 yeras risk points
 calc_cholesterol_female <-  function (chol){  # chol should be numeric
-  point <- 0
+  point <- 0 # set default point to be 0
   # chol less 100 or more than 405 returns NA
   if (chol<100 || chol >405 || is.na(chol)){
     points <- NA
-  } else if(chol<160){
+  } else if(chol<160){ # specify cholesterol level case by case
     points <- 0
   } else if(chol>=160 && chol<=199){
     points <- 1
